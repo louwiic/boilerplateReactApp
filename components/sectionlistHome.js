@@ -62,6 +62,9 @@ const Sectionlist = ({data}) => {
     if (text !== '') {
       const newData = dataList.filter((item) => {
         let itemSearched = [];
+        if (item.title == text) {
+          itemSearched.push(item);
+        }
         item.data.filter((d) => {
           if (d == text) {
             itemSearched.push(item);
