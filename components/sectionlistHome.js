@@ -47,13 +47,37 @@ const renderSeparator = () => {
 };
 
 const Sectionlist = ({data}) => {
+  const [searchText, setSearchText] = React.useState('');
+  const [dataList, setDataList] = React.useState();
+
+  const [value, onChangeText] = React.useState('Useless Placeholder');
+
+  React.useEffect(() => {
+    setDataList(data);
+  }, []);
+
   const handleSearch = (text) => {
-    const dataSearched = filter(data, (item) => {
-      console.log(item);
-      if (item.title === text) {
-        return item;
-      }
-    });
+    setSearchText(text);
+
+    if (text !== '') {
+      const newData = dataList.filter((item) => {
+        let itemSearched = [];
+        if (item.title == text) {
+          itemSearched.push(item);
+        }
+        item.data.filter((d) => {
+          if (d == text) {
+            itemSearched.push(item);
+            return item;
+          }
+        });
+        if (itemSearched.length > 0) {
+          setDataList(itemSearched);
+        }
+      });
+    } else {
+      setDataList(data);
+    }
   };
 
   const renderHeader = () => (
@@ -61,28 +85,30 @@ const Sectionlist = ({data}) => {
       style={{
         backgroundColor: '#fff',
         padding: 10,
-      }}>
-      <TextInput
-        clearButtonMode="always"
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={handleSearch}
-        status="info"
-        placeholder="Rechercher"
-        style={{
-          borderRadius: 25,
-          borderColor: '#333',
-          backgroundColor: '#fff',
-        }}
-        textStyle={{color: '#000'}}
-      />
-    </View>
+        marginTop: 40,
+      }}></View>
   );
 
   return (
     <SafeAreaView style={styles.container}>
+      <TextInput
+        clearButtonMode="always"
+        autoCapitalize="none"
+        autoCorrect={false}
+        onChangeText={(text) => handleSearch(text)}
+        status="info"
+        placeholder="Rechercher"
+        style={{
+          height: 48,
+          borderRadius: 25,
+          borderColor: 'black',
+          backgroundColor: '#fff',
+        }}
+        textStyle={{color: '#000'}}
+      />
+
       <SectionList
-        sections={data}
+        sections={dataList}
         keyExtractor={(item, index) => item + index}
         renderItem={({item}) => <Item title={item} />}
         renderSectionHeader={({section: {title}}) => (
