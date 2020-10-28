@@ -15,8 +15,37 @@ import {
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { RNCamera } from 'react-native-camera';
 
-const ProfilView = () => {
+
+
+
+const ProfilView = ({navigation}) => {
+    const [takePicture, setTakePicture] = React.useState(false)
+
+    if(takePicture){
+        return(
+            <>‍
+            <SafeAreaView styles={{flex:1}}>‍                        
+                <RNCamera 
+                ref={ref => {
+                this.camera = ref;
+                }}
+                captureAudio={false}
+                style={{flex: 1}}
+                type={RNCamera.Constants.Type.back}
+                androidCameraPermissionOptions={{
+                title: 'Permission to use camera',
+                message: 'We need your permission to use your camera',
+                buttonPositive: 'Ok',
+                buttonNegative: 'Cancel',
+                }} />
+            </SafeAreaView>‍
+          </>
+    
+        )
+    }
+
     return(
       <View style={styles.container}>
     
@@ -29,7 +58,7 @@ const ProfilView = () => {
                     'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
                 }}
             />
-            <TouchableOpacity style={{marginTop: 30, borderWidth:1, padding:20, borderRadius: 20}}>
+            <TouchableOpacity onPress={() => navigation.navigate('camera')} style={{marginTop: 30, borderWidth:1, padding:20, borderRadius: 20}}>
                 <Icon 
                     name={"camera-retro"}
                     color={"black"}
@@ -38,10 +67,6 @@ const ProfilView = () => {
                 />
             </TouchableOpacity>
         </View>
-
-
-
-
 
         <View style={{backgroundColor: "#cfd8dc", borderTopLeftRadius: 45, marginTop: 20, flex:2}}>
     

@@ -14,7 +14,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import ProfilView from '../../screens/Profil/ProfilView';
 import {AuthContext} from '../../components/context';
-
+import CameraView from '../../screens/Profil/Camera';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
@@ -40,6 +40,9 @@ const AuthStack = ({navigation}) => {
           },
         }}
          name="ProfilView" component={ProfilView} />
+
+    <Stack.Screen     
+      name="camera" component={CameraView} />
     </Stack.Navigator>
   );
 };
