@@ -8,6 +8,7 @@
 
 import 'react-native-gesture-handler';
 import React from 'react';
+import localization from 'moment/locale/fr';
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,70 +18,38 @@ import {
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
+
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import allReducers from './redux/reducers.js';
 import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
+
+//stack
 import HomeStack from './navigation/Stacknavigator/HomeStack';
 import AuthStack from './navigation/Stacknavigator/AuthStack';
+import ProfilStack from './navigation/Stacknavigator/ProfilStack';
+//View
 import LoginView from './screens/Auth/LoginView';
+import FormView from './screens/Home/FormView';
 import Form from './components/Form';
-import {AuthContext} from './components/context';
-import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
+//lib
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useSelector, useDispatch} from 'react-redux';
+import {AuthContext} from './components/context';
+//Nav
+import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
+import { loginReducer, initialLoginState} from './redux/features/auth/authentication';
 
 /* Init config */
 configureFontAwesomePro(); //Fontawsome
 const Tab = createBottomTabNavigator(); //BottomTab
 const store = createStore(allReducers); //store redux
-const RootStack = createStackNavigator(); //RootStack
+
 
 const App = () => {
-  const initialLoginState = {
-    isLoading: true,
-    userName: null,
-    userToken: null,
-  };
 
-  const loginReducer = (prevState, action) => {
-    switch (action.type) {
-      case 'RETRIEVE_TOKEN':
-        return {
-          ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGIN':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGOUT':
-        return {
-          ...prevState,
-          userName: null,
-          userToken: null,
-          isLoading: false,
-        };
-      case 'REGISTER':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-    }
-  };
-
-  const [loginState, dispatch] = React.useReducer(
-    loginReducer,
-    initialLoginState,
-  );
+  const [loginState, dispatch] = React.useReducer( loginReducer, initialLoginState);
 
   const authContext = React.useMemo(() => ({
     signIn: async (credentials) => {
@@ -150,16 +119,16 @@ const App = () => {
                   let iconName;
                   if (route.name === 'Home') {
                     iconName = focused ? 'home' : 'home';
-                  } else if (route.name === 'List') {
-                    iconName = focused ? 'clipboard-list' : 'clipboard-list';
-                  } else if (route.name === 'Réglages') {
-                    iconName = focused ? 'cog' : 'cog';
+                  } else if (route.name === 'Form') {
+                    iconName = focused ? 'file-contract' : 'file-contract';
+                  } else if (route.name === 'Profil') {
+                    iconName = focused ? 'user-circle' : 'user-circle';
                   }
                   return (
-                    <Icon
+                    <Icon 
                       name={iconName}
                       color={color}
-                      type="light"
+                      type="regular"
                       size={size}
                     />
                   );
@@ -170,7 +139,8 @@ const App = () => {
                 inactiveTintColor: 'gray',
               }}>
               <Tab.Screen name="Home" component={HomeStack} />
-              <Tab.Screen name="Form" component={AuthStack} />
+              <Tab.Screen name="Form" component={FormView} />
+              <Tab.Screen name="Profil" component={ProfilStack} />
             </Tab.Navigator>
           ) : (
             <AuthStack />

@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import styles from '../styles/sectionListHome';
-import {Avatar, Accessory} from 'react-native-elements';
-
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+//import ItemSectionList from './List/item/itemSectionHomeList';
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,45 +16,39 @@ import {
   Alert,
   FlatList,
   SectionList,
+  TouchableOpacity,
 } from 'react-native';
 
-const Item = ({title}) => (
-  <View style={styles.item}>
-    <View style={{flexDirection: 'row'}}>
-      <Avatar
-        rounded
-        size="large"
-        source={{
-          uri:
-            'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
-        }}
-      />
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  </View>
-);
-
-const renderSeparator = () => {
-  return (
-    <View
-      style={{
-        height: 1,
-        width: '86%',
-        backgroundColor: '#CED0CE',
-        marginLeft: '5%',
-      }}
-    />
-  );
-};
 
 const Sectionlist = ({data}) => {
+  const navigation = useNavigation();
+  //const data = useSelector((state) => state.dataHomeList);
+
+  const [searchText, setSearchText] = React.useState('');
+  const [dataList, setDataList] = React.useState(data);
+
   const handleSearch = (text) => {
-    const dataSearched = filter(data, (item) => {
-      console.log(item);
-      if (item.title === text) {
-        return item;
-      }
-    });
+    setSearchText(text);
+
+    if (text !== '') {
+      const newData = dataList.filter((item) => {
+        let itemSearched = [];
+        if (item.title == text) {
+          itemSearched.push(item);
+        }
+        item.data.filter((d) => {
+          if (d == text) {
+            itemSearched.push(item);
+            return item;
+          }
+        });
+        if (itemSearched.length > 0) {
+          setDataList(itemSearched);
+        }
+      });
+    } else {
+      setDataList(data);
+    }
   };
 
   const renderHeader = () => (
@@ -61,30 +56,33 @@ const Sectionlist = ({data}) => {
       style={{
         backgroundColor: '#fff',
         padding: 10,
-      }}>
-      <TextInput
-        clearButtonMode="always"
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={handleSearch}
-        status="info"
-        placeholder="Rechercher"
-        style={{
-          borderRadius: 25,
-          borderColor: '#333',
-          backgroundColor: '#fff',
-        }}
-        textStyle={{color: '#000'}}
-      />
-    </View>
+        marginTop: 40,
+      }}
+    />
   );
 
   return (
     <SafeAreaView style={styles.container}>
+      <TextInput
+        clearButtonMode="always"
+        autoCapitalize="none"
+        autoCorrect={false}
+        onChangeText={(text) => handleSearch(text)}
+        status="info"
+        placeholder="Rechercher"
+        style={{
+          height: 48,
+          borderRadius: 25,
+          borderColor: 'black',
+          backgroundColor: '#fff',
+        }}
+        textStyle={{color: '#000'}}
+      />
+
       <SectionList
-        sections={data}
+        sections={dataList}
         keyExtractor={(item, index) => item + index}
-        renderItem={({item}) => <Item title={item} />}
+        renderItem={({item}) => <View />}
         renderSectionHeader={({section: {title}}) => (
           <Text style={styles.header}>{title}</Text>
         )}
