@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import styles from '../styles/sectionListHome';
-import {Avatar, Accessory} from 'react-native-elements';
-
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+//import ItemSectionList from './List/item/itemSectionHomeList';
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,46 +16,16 @@ import {
   Alert,
   FlatList,
   SectionList,
+  TouchableOpacity,
 } from 'react-native';
 
-const Item = ({title}) => (
-  <View style={styles.item}>
-    <View style={{flexDirection: 'row'}}>
-      <Avatar
-        rounded
-        size="large"
-        source={{
-          uri:
-            'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
-        }}
-      />
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  </View>
-);
-
-const renderSeparator = () => {
-  return (
-    <View
-      style={{
-        height: 1,
-        width: '86%',
-        backgroundColor: '#CED0CE',
-        marginLeft: '5%',
-      }}
-    />
-  );
-};
 
 const Sectionlist = ({data}) => {
+  const navigation = useNavigation();
+  //const data = useSelector((state) => state.dataHomeList);
+
   const [searchText, setSearchText] = React.useState('');
-  const [dataList, setDataList] = React.useState();
-
-  const [value, onChangeText] = React.useState('Useless Placeholder');
-
-  React.useEffect(() => {
-    setDataList(data);
-  }, []);
+  const [dataList, setDataList] = React.useState(data);
 
   const handleSearch = (text) => {
     setSearchText(text);
@@ -86,7 +57,8 @@ const Sectionlist = ({data}) => {
         backgroundColor: '#fff',
         padding: 10,
         marginTop: 40,
-      }}></View>
+      }}
+    />
   );
 
   return (
@@ -110,7 +82,7 @@ const Sectionlist = ({data}) => {
       <SectionList
         sections={dataList}
         keyExtractor={(item, index) => item + index}
-        renderItem={({item}) => <Item title={item} />}
+        renderItem={({item}) => <View />}
         renderSectionHeader={({section: {title}}) => (
           <Text style={styles.header}>{title}</Text>
         )}

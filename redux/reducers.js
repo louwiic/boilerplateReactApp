@@ -1,11 +1,8 @@
 import {combineReducers} from 'redux';
-
-import addQuantity from './features/addQuantity';
-import login from './features/login';
+import dataList from './features/home/dataList';
 
 const allReducers = combineReducers({
-  addQuantity: addQuantity,
-  login: login,
+  dataHomeList: dataList,
 });
 
 export default allReducers;
