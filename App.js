@@ -128,7 +128,7 @@ const App = () => {
                     <Icon 
                       name={iconName}
                       color={color}
-                      type="regular"
+                      type="light" 
                       size={size}
                     />
                   );

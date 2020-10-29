@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {Avatar, Accessory} from 'react-native-elements';
+import {Avatar, Accessory, ListItem, } from 'react-native-elements';
 import Icon from 'react-native-fontawesome-pro';
 import {
+  FlatList,
   SafeAreaView,
   StyleSheet,
   ScrollView,
@@ -12,68 +13,123 @@ import {
   StatusBar,
   Button,
   Alert,
+  Dimensions
 } from 'react-native';
-import {useDispatch} from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { RNCamera } from 'react-native-camera';
+import LinearGradient from 'react-native-linear-gradient'
 
 
+const list = [
+  {
+    name: 'Mes infos',
+   // avatar_url: 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80', //with avatar example just pass this property
+    subtitle: 'Identifiants et adresses',
+    iconProperties : <Icon name="user-ninja" size={26} color={'gray'} type="light"/>,
+  },
+  {
+    name: 'Mes préférences',
+    subtitle: "Contact et notifications",
+   iconProperties : <Icon name="cog" size={26} color={'gray'} type="light"/>,
+  },
+  {
+    name: 'Aide et contact',
+    subtitle: "Questions et remarques",
+    iconProperties : <Icon name="info" size={26} color={'gray'} type="light"/>,
+  },
 
+]
 
-const ProfilView = ({navigation}) => {
+const ProfilView = ({route, navigation}) => {
     const [takePicture, setTakePicture] = React.useState(false)
-
-    if(takePicture){
-        return(
-            <>‍
-            <SafeAreaView styles={{flex:1}}>‍                        
-                <RNCamera 
-                ref={ref => {
-                this.camera = ref;
-                }}
-                captureAudio={false}
-                style={{flex: 1}}
-                type={RNCamera.Constants.Type.back}
-                androidCameraPermissionOptions={{
-                title: 'Permission to use camera',
-                message: 'We need your permission to use your camera',
-                buttonPositive: 'Ok',
-                buttonNegative: 'Cancel',
-                }} />
-            </SafeAreaView>‍
-          </>
+    const imageUri =  route.params ? route.params.path : 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
     
-        )
-    }
-
+    /* Show doc react-element customize list item https://reactnativeelements.com/docs/listitem#badges */
+    const renderItem = ({ item }) => (
+      <TouchableOpacity activeOpacity={0.8}>
+        <ListItem containerStyle={{backgroundColor:"transparent"}} bottomDivider>
+        
+        {item.iconProperties &&  item.iconProperties}
+        <Avatar rounded size={40} source={item.avatar_url && { uri: item.avatar_url }} />
+        <ListItem.Content>
+          <ListItem.Title style={{fontWeight:"bold"}}>{item.name}</ListItem.Title>
+          <ListItem.Subtitle>{item.subtitle}</ListItem.Subtitle>
+        </ListItem.Content>
+        <Icon name="angle-right" size={25} color={'gray'} type="light"/>
+      </ListItem>
+      </TouchableOpacity>
+    )
+  
     return(
-      <View style={styles.container}>
-    
-        <View style={{marginTop: 20,alignItems:"center", justifyContent:"center"}}>
+      <View style={styles.container}>  
+        <View style={{backgroundColor:"#f5f5f5",paddingTop: 20,paddingBottom:20, alignItems:"center", justifyContent:"center"}}>
             <Avatar
                 rounded
-                size={150}
+                size={120}
                 source={{
-                    uri:
-                    'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+                    uri:imageUri
                 }}
             />
-            <TouchableOpacity onPress={() => navigation.navigate('camera')} style={{marginTop: 30, borderWidth:1, padding:20, borderRadius: 20}}>
-                <Icon 
+
+
+            <View style={{ width: Dimensions.get('window').width}}>
+              {/* tools button */}
+              <View style={{flexDirection: "row", justifyContent: "space-between",  marginTop: 20}}>
+                <TouchableOpacity  style={{padding: 15}}> 
+                  <Icon name="piggy-bank" size={30} color="#000" type="light"/>
+                </TouchableOpacity>
+
+                {/* Source customize gradient differents cases : https://blog.logrocket.com/understanding-react-native-linear-gradient/ */}
+                <LinearGradient
+                  start={{ x: 0, y: 0 }}
+                  end={{x: 1, y: 1 }}
+                  colors={[ '#833ab4', '#fd221d', '#fcb045' ]}
+                  style={{                    
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 20,
+                    borderWidth:3, 
+                    borderColor: "transparent"
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('camera')}
+                      style={{
+                        margin: 1,
+                        width: 50,
+                        borderColor: "white",
+                        borderRadius: 15,
+                        borderWidth:3, 
+                        paddingVertical: 10,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: 'transparent',
+                      }}
+                    >
+                  
+                    <Icon 
                     name={"camera-retro"}
-                    color={"black"}
+                    color={"white"}
                     type="regular"
                     size={24}
-                />
-            </TouchableOpacity>
+                    />
+                </TouchableOpacity> 
+               </LinearGradient>
+
+                <TouchableOpacity style={{padding: 15}}> 
+                  <Icon name="plane-departure" size={30} color="#000" type="light"/>
+                </TouchableOpacity>
+              </View>
+            </View>
+      
+         
         </View>
-
-        <View style={{backgroundColor: "#cfd8dc", borderTopLeftRadius: 45, marginTop: 20, flex:2}}>
-    
+        <View style={{ marginTop: 20, flex:2}}>
+          <FlatList              
+              keyExtractor={(item, index) => index.toString()}
+              data={list}
+              renderItem={renderItem}
+            />  
         </View>
-
-
-
       </View>
     )
   }
@@ -86,6 +142,7 @@ const ProfilView = ({navigation}) => {
     },
     container: {
       flex: 1,
+      backgroundColor: "white"
       //padding: 8,
     },
     button: {

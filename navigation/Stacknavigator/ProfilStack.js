@@ -23,7 +23,6 @@ const AuthStack = ({navigation}) => {
   return (
     <Stack.Navigator >
       <Stack.Screen     
-      name="PROFIL"
       options={{
           title: 'PROFIL',
           headerStyle: {
@@ -41,10 +40,9 @@ const AuthStack = ({navigation}) => {
         }}
          name="ProfilView" component={ProfilView} />
 
-    <Stack.Screen     
-      name="camera" component={CameraView} />
+    <Stack.Screen options={{headerShown: false}} name="camera" component={CameraView} />
     </Stack.Navigator>
   );
 };
 
-export default AuthStack;
+  export default AuthStack;

@@ -13,6 +13,8 @@ import {
   Alert,
   TouchableOpacity,
   DatePickerIOS,
+  Pressable,
+  KeyboardAvoidingView,
 } from 'react-native';
 import moment from 'moment';
 
@@ -37,15 +39,20 @@ const RegisterView = () => {
 
   React.useEffect(() => {
     register({name: 'text'}, {required: true});
-    register({name: 'birthday'}, {required: true});
+    register({name: 'phone'}, {required: true});
+    register({name: 'email'}, {required: true});
+    register({name: 'password'}, {required: true});
+    register({name: 'address'}, {required: true});
+    register({name: 'zipcode'}, {required: true});
   }, [register]);
 
-  const {signUp} = React.useContext(AuthContext);
 
-  const handleInput = (type, text) => {
-    setValue(type, text)
-      
+  const submit = (data) => {
+    console.log(data);
+    console.log("value data picker");
+    console.log(chosenDate);
   }
+
 
   const HandleError = () => {
       return (
@@ -74,6 +81,7 @@ const RegisterView = () => {
 
   return (
     <View style={styles.container}>
+      <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   keyboardVerticalOffset={100}>
       <ScrollView>
         <View style={{alignSelf: 'flex-end'}}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -101,7 +109,7 @@ const RegisterView = () => {
           onChangeText={(text) => setValue('text', text, true)}
           maxLength={10}  //setting limit of input
         />
-        {errors.text && <HandleError />}
+        {/*errors.text && <HandleError />*/}
 
         <Text style={styles.label}>Phone Number</Text> 
         <TextInput
@@ -128,12 +136,17 @@ const RegisterView = () => {
         />
 
         <Text style={styles.label}>Birthday</Text>
-        <TextInput
-          style={styles.input}
-          onTouchStart={showDatePicker}
-          value={chosenDate}
-          //onChangeText={(text) => handleInput('birthday', text)}
-        />
+        <Pressable onPress={showDatePicker} 
+        style={{ backgroundColor: 'white',
+            borderColor: null,
+            height: 48,
+            paddingLeft:10,
+            justifyContent: "center",
+            borderRadius: 4,
+          }}>
+          <Text>{chosenDate}</Text>
+        </Pressable>
+
          <DateTimePickerModal
             headerTextIOS={"Date d'anniversaire"}
             confirmTextIOS={"Selectionner"}
@@ -143,7 +156,7 @@ const RegisterView = () => {
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
         />
-        {errors.birthday && <HandleError />}
+        {/*errors.birthday && <HandleError />*/}
           
         <Text style={styles.label}>Adresse *</Text>
         <TextInput
@@ -155,12 +168,12 @@ const RegisterView = () => {
         <TextInput
           keyboardType={"number-pad"}
           style={[styles.input, borderFocus]} 
-          onChangeText={(text) => setValue('phone', text, true)}
+          onChangeText={(text) => setValue('zipcode', text, true)}
           maxLength={10}  //setting limit of input
         />
         {errors.phone && Alert.alert("Champs(s) manquant(s) phone")}
 
-        <TouchableOpacity onPress={handleSubmit(signUp)}>
+        <TouchableOpacity onPress={handleSubmit(submit)}>
           <Text
             style={styles.button}
             color="white"
@@ -169,6 +182,7 @@ const RegisterView = () => {
           >Valider</Text>
         </TouchableOpacity>
       </ScrollView>
+      </KeyboardAvoidingView>     
     </View>
   );
 };
