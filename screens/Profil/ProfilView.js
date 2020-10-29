@@ -18,16 +18,18 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient'
 import {BottomSheetAction} from '../../components/bottomSheet';
+import {AuthContext} from '../../components/context';
 
 
 
 const ProfilView = ({route, navigation}) => {
     const [takePicture, setTakePicture] = React.useState(false)
     const imageUri =  route.params ? route.params.path : 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
-    
+    const {signOut} = React.useContext(AuthContext);
 
     /* Callback press in bottomsheet */
     const openDialog1 = (item) => {
+        signOut()
         console.log("callback is called !!!")
     }
     const openDialog2 = (item) => {
@@ -107,7 +109,7 @@ const ProfilView = ({route, navigation}) => {
                 </TouchableOpacity>
 
                 {/* Source customize gradient differents cases : https://blog.logrocket.com/understanding-react-native-linear-gradient/ */}
-                <LinearGradient
+                {/* <LinearGradient
                   start={{ x: 0, y: 0 }}
                   end={{x: 1, y: 1 }}
                   colors={[ '#833ab4', '#fd221d', '#fcb045' ]}
@@ -118,13 +120,13 @@ const ProfilView = ({route, navigation}) => {
                     borderWidth:3, 
                     borderColor: "transparent"
                   }}
-                >
+                > */}
                   <TouchableOpacity
                     onPress={() => navigation.navigate('camera')}
                       style={{
                         margin: 1,
                         width: 50,
-                        borderColor: "white",
+                        borderColor: "#000",
                         borderRadius: 15,
                         borderWidth:3, 
                         paddingVertical: 10,
@@ -135,12 +137,12 @@ const ProfilView = ({route, navigation}) => {
                     >                  
                       <Icon 
                       name={"camera-retro"}
-                      color={"white"}
+                      color={"#000"}
                       type="regular"
                       size={24}
                       />
                   </TouchableOpacity> 
-                </LinearGradient>
+                {/* </LinearGradient> */}
 
                 <TouchableOpacity style={{padding: 15}}> 
                   <Icon name="plane-departure" size={30} color="#000" type="light"/>
