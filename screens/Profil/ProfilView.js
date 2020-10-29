@@ -17,35 +17,65 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient'
+import {BottomSheetAction} from '../../components/bottomSheet';
 
 
-const list = [
-  {
-    name: 'Mes infos',
-   // avatar_url: 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80', //with avatar example just pass this property
-    subtitle: 'Identifiants et adresses',
-    iconProperties : <Icon name="user-ninja" size={26} color={'gray'} type="light"/>,
-  },
-  {
-    name: 'Mes préférences',
-    subtitle: "Contact et notifications",
-   iconProperties : <Icon name="cog" size={26} color={'gray'} type="light"/>,
-  },
-  {
-    name: 'Aide et contact',
-    subtitle: "Questions et remarques",
-    iconProperties : <Icon name="info" size={26} color={'gray'} type="light"/>,
-  },
-
-]
 
 const ProfilView = ({route, navigation}) => {
     const [takePicture, setTakePicture] = React.useState(false)
     const imageUri =  route.params ? route.params.path : 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
     
+
+    /* Callback press in bottomsheet */
+    const openDialog1 = (item) => {
+        console.log("callback is called !!!")
+    }
+    const openDialog2 = (item) => {
+        console.log("callback CVG is called !!")
+    }
+    const openDialog3 = (item) => {
+        console.log("callback Feedback is called !!!")
+    }
+
+    /* Bottom sheet options */
+    const bottomSheetOptions = [
+      {
+        title: "Deconnexion", callback: openDialog1
+      },
+      {
+        title: "CVG", callback: openDialog2
+      },
+      {
+        title: "Feedback", callback: openDialog3
+      },
+    ];
+
+    const list = [
+      {
+        name: 'Mes infos',
+       // avatar_url: 'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80', //with avatar example just pass this property
+        subtitle: 'Identifiants et adresses',
+        iconProperties : <Icon name="user-ninja" size={26} color={'gray'} type="light"/>,
+        pressAction : (item) => console.log(item)
+      },
+      {
+        name: 'Mes préférences',
+        subtitle: "Contact et notifications",
+       iconProperties : <Icon name="cog" size={26} color={'gray'} type="light"/>,
+       pressAction : (item) => console.log(item)
+      },
+      {
+        name: 'Aide et contact',
+        subtitle: "Questions et remarques",
+        iconProperties : <Icon name="info" size={26} color={'gray'} type="light"/>,
+        pressAction : (item) => BottomSheetAction(bottomSheetOptions)
+      },
+    
+    ]
+
     /* Show doc react-element customize list item https://reactnativeelements.com/docs/listitem#badges */
     const renderItem = ({ item }) => (
-      <TouchableOpacity activeOpacity={0.8}>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => item.pressAction(item)}>
         <ListItem containerStyle={{backgroundColor:"transparent"}} bottomDivider>
         
         {item.iconProperties &&  item.iconProperties}
@@ -69,8 +99,6 @@ const ProfilView = ({route, navigation}) => {
                     uri:imageUri
                 }}
             />
-
-
             <View style={{ width: Dimensions.get('window').width}}>
               {/* tools button */}
               <View style={{flexDirection: "row", justifyContent: "space-between",  marginTop: 20}}>
@@ -104,16 +132,15 @@ const ProfilView = ({route, navigation}) => {
                         justifyContent: 'center',
                         backgroundColor: 'transparent',
                       }}
-                    >
-                  
-                    <Icon 
-                    name={"camera-retro"}
-                    color={"white"}
-                    type="regular"
-                    size={24}
-                    />
-                </TouchableOpacity> 
-               </LinearGradient>
+                    >                  
+                      <Icon 
+                      name={"camera-retro"}
+                      color={"white"}
+                      type="regular"
+                      size={24}
+                      />
+                  </TouchableOpacity> 
+                </LinearGradient>
 
                 <TouchableOpacity style={{padding: 15}}> 
                   <Icon name="plane-departure" size={30} color="#000" type="light"/>
@@ -121,9 +148,8 @@ const ProfilView = ({route, navigation}) => {
               </View>
             </View>
       
-         
         </View>
-        <View style={{ marginTop: 20, flex:2}}>
+        <View style={{flex:2}}>
           <FlatList              
               keyExtractor={(item, index) => index.toString()}
               data={list}
