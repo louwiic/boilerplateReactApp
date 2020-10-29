@@ -10,6 +10,7 @@ import {
   StatusBar,
   Button,
   Alert,
+  SectionList
 } from 'react-native';
 
 import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
@@ -17,8 +18,12 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form';
 import {AuthContext} from '../../components/context';
+import {useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import List from '../../components/flatlist';
-import SectionListHome from '../../components/sectionlistHome';
+import ItemSectionHomeList from '../../components/List/item/itemSectionHomeList';
+import headerSectionHomeList from '../../components/List/item/headerSectionHomeList';
+import SearchInList from '../../components/List/searchInList';
 
 const DATA = [
   {
@@ -39,7 +44,11 @@ const DATA = [
   },
 ];
 
-const HomeView = () => {
+const HomeView = ({navigation}) => {
+
+  const data = useSelector((state) => state.dataHomeList);
+  const dispatch = useDispatch();
+
   const {register, setValue, handleSubmit, errors} = useForm();
   const onSubmit = (data) => Alert.alert('Form Data', JSON.stringify(data));
 
@@ -48,16 +57,57 @@ const HomeView = () => {
     register({name: 'lastName'});
   }, [register]);
 
+  React.useEffect(() => {
+    //fetch data here
+
+    dispatch({type: 'LOAD', data: DATA});
+  }, []);
+
   const {signOut} = React.useContext(AuthContext);
+
+  const paginate = () => {
+    //
+  }
+
+  const handleRefresh =() => {
+    console.log('refresh');
+    dispatch({type: 'LOAD', data: DATA});
+  }
+
+  /* Separator item */
+  const renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: '86%',
+          backgroundColor: '#CED0CE',
+          marginLeft: '5%',
+        }}
+      />
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Hello React ! 🎉</Text>
-      <SectionListHome data={DATA} />
+ 
+      <SearchInList dataList={data} />
+      <SectionList
+        onRefresh={() => handleRefresh()}
+        refreshing={false}
+        sections={data}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({item}) => <ItemSectionHomeList navigation={navigation} title={item} />}
+        renderSectionHeader={({section: {title}}) => (
+          <Text style={styles.header}>{title}</Text>
+        )}
+        ListHeaderComponent={headerSectionHomeList}
+        ItemSeparatorComponent={renderSeparator}
+      />
       <Button title="Se deconnecter" onPress={signOut} />
     </View>
   );
-};
+}; 
 
 const styles = StyleSheet.create({
   label: {

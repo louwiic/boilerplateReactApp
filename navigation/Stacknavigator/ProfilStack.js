@@ -12,37 +12,19 @@ import {
 import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import HomeView from '../../screens/Home/HomeView';
-import DetailView from '../../screens/Home/DetailView';
-
+import ProfilView from '../../screens/Profil/ProfilView';
+import {AuthContext} from '../../components/context';
+import CameraView from '../../screens/Profil/Camera';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
-const HomeStack = () => {
-  return (
-    <Stack.Navigator>
-      {/* Customize your app bar with options (check docs react navigation about) */}
-      <Stack.Screen 
-        options={{
-          title: 'HOME',
-          headerStyle: {
-            backgroundColor: "#ff5722",
-          },
-          headerTintColor: '#f0f0f0',
-          headerBackTitle: 'retour',
-          headerTitleStyle: {
-            textAlign: 'center',
-            fontWeight: '600',
-            alignSelf: 'center',
-            fontFamily: global.fontIBMPRegular,
-            letterSpacing: -0.08,
-          },
-        }} 
-        name="Home"component={HomeView} />
 
-      <Stack.Screen  
-          options={{
-          title: 'DETAILS',
+const AuthStack = ({navigation}) => {
+  return (
+    <Stack.Navigator >
+      <Stack.Screen     
+      options={{
+          title: 'PROFIL',
           headerStyle: {
             backgroundColor: "#ff5722",
           },
@@ -56,9 +38,11 @@ const HomeStack = () => {
             letterSpacing: -0.08,
           },
         }}
-        name="Detail" component={DetailView} />
+         name="ProfilView" component={ProfilView} />
+
+    <Stack.Screen options={{headerShown: false}} name="camera" component={CameraView} />
     </Stack.Navigator>
   );
 };
 
-export default HomeStack;
+  export default AuthStack;
