@@ -63,8 +63,8 @@ const ProfilView = ({route, navigation}) => {
       {
         name: 'Mes préférences',
         subtitle: "Contact et notifications",
-       iconProperties : <Icon name="cog" size={26} color={'gray'} type="light"/>,
-       pressAction : (item) => console.log(item)
+        iconProperties : <Icon name="cog" size={26} color={'gray'} type="light"/>,
+        pressAction : (item) => console.log(item)
       },
       {
         name: 'Aide et contact',

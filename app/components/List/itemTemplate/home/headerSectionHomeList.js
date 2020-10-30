@@ -15,7 +15,7 @@ import {
     SectionList,
     TouchableOpacity,
   } from 'react-native';
-  import styles from '../../../styles/sectionListHome';
+  import styles from '../../../../styles/sectionListHome';
 
 
 /* template item */
