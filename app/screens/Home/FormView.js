@@ -15,6 +15,7 @@ import {
   DatePickerIOS,
   Pressable,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import moment from 'moment';
 
@@ -27,7 +28,8 @@ import {Input} from 'react-native-elements';
 import {useNavigation} from '@react-navigation/native';
 import {AuthContext} from '../../components/context';
 import { TouchableHighlight } from 'react-native-gesture-handler';
- 
+import { KeyboardAccessoryNavigation } from 'react-native-keyboard-accessory'
+
 const RegisterView = () => {
   const navigation = useNavigation();
   const [borderFocus, setBorderFocus] = React.useState('transparent');
@@ -81,7 +83,8 @@ const RegisterView = () => {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   keyboardVerticalOffset={100}>
+
+      <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior={Platform.OS=== 'ios'? "padding": null} enabled   keyboardVerticalOffset={100}>
       <ScrollView>
         <View style={{alignSelf: 'flex-end'}}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -105,14 +108,16 @@ const RegisterView = () => {
 
         <Text style={styles.label}>Text</Text>
         <TextInput
+          returnKeyType = {"next"}
           style={[styles.input, borderFocus]} 
           onChangeText={(text) => setValue('text', text, true)}
-          maxLength={10}  //setting limit of input
+          maxLength={10}  //setting limit of input 
         />
         {/*errors.text && <HandleError />*/}
 
         <Text style={styles.label}>Phone Number</Text> 
         <TextInput
+          returnKeyType = {"next"}
           keyboardType={"phone-pad"}
           style={[styles.input, borderFocus]} 
           onChangeText={(text) => setValue('phone', text, true)}
@@ -122,6 +127,7 @@ const RegisterView = () => {
 
         <Text style={styles.label}>Email *</Text>
         <TextInput
+         returnKeyType = {"next"}
          keyboardType={"email-address"}
          style={[styles.input]}
          onChangeText={(text) => setValue('email', text)}

@@ -12,9 +12,9 @@ import {
 import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import LoginView from '../../screens/Auth/LoginView';
-import RegisterView from '../../screens/Auth/RegisterView';
-import {AuthContext} from '../../components/context';
+import LoginView from '../../app/screens/Auth/LoginView';
+import RegisterView from '../../app/screens/Auth/RegisterView';
+import {AuthContext} from '../../app/components/context';
 
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 

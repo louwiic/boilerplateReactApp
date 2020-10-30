@@ -25,21 +25,20 @@ import allReducers from './redux/reducers.js';
 import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-
 //stack
 import HomeStack from './navigation/Stacknavigator/HomeStack';
 import AuthStack from './navigation/Stacknavigator/AuthStack';
 import ProfilStack from './navigation/Stacknavigator/ProfilStack';
 //View
-import LoginView from './screens/Auth/LoginView';
-import FormView from './screens/Home/FormView';
-import Form from './components/Form';
+import LoginView from './app/screens/Auth/LoginView';
+import FormView from './app/screens/Home/FormView'; 
+import Form from './app/components/Form';
 //lib
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AuthContext} from './components/context';
+import {AuthContext} from './app/components/context';
 //Nav
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
-import { loginReducer, initialLoginState} from './redux/features/auth/authentication';
+import { loginReducer, initialLoginState} from './redux/features/auth/authentication'; 
 
 /* Init config */
 configureFontAwesomePro(); //Fontawsome

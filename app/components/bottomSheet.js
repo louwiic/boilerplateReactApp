@@ -18,8 +18,6 @@ import {ActionSheet} from 'react-native-cross-actionsheet';
 import BottomSheet from 'react-native-bottomsheet';
 
 const BottomSheetAction = (opts) => {
-
-
     if (Platform.OS === 'ios') {
         ActionSheet.options({
           options: [
@@ -44,7 +42,7 @@ const BottomSheetAction = (opts) => {
       } else {
          BottomSheet.showBottomSheetWithOptions(
           {
-            options: ['Ouvrir avec Google maps', 'Ouvrir avec Waze', 'Annuler'],
+            options: [opts[0].title, opts[1].title,opts[2].title, 'Annuler'],
             title: 'Choissisez une action',
             dark: false,
             cancelButtonIndex: 3,
@@ -52,10 +50,13 @@ const BottomSheetAction = (opts) => {
           (value) => {
             switch (value) {
               case 0:
-                 () => { }
+                opts[0].callback
                 break;
               case 1:
-                 () => { }
+                opts[1].callback
+                break;
+              case 2:
+                opts[2].callback
                 break;
               default:
                 break;
