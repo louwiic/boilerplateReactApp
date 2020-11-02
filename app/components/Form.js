@@ -26,9 +26,9 @@ const HomeView = () => {
 
 
   const fields = [
-    { name: "firstname", required: <Text>Error firstname</Text>, iconLeft:''  },
+    { name: "firstname", required: <Text>Error firstname</Text>, iconLeft:{ name:"user", size:20, color:'gray', type:"light"}  },
     { name: "lastname", required: <Text>Error firstname</Text> },
-    { name: "address", required: <Text>Error firstname</Text>, type: 'email' },
+    { name: "address", required: <Text>Error firstname</Text>, iconRight :{ name:"user", size:20, color:'gray', type:"light"} ,type: 'email' },
     { name: "zipcode", required: <Text>Error zipcode</Text>, maxLenght: 4 },
   ]
 
@@ -89,14 +89,15 @@ const HomeView = () => {
                 <>    
                     <Text style={styles.label}> {fieldName} *</Text>
                     <View style={[styles.sectionStyle, { borderWidth: 1, borderColor: focusedIndex === index ? 'orange' : "transparent" }]}>
-                      <Icon name="angle-right" size={25} color={'gray'} type="light" />
+                      {item.iconLeft && <View style={{marginLeft:10}}><Icon name={item.iconLeft.name} size={item.iconLeft.size} color={item.iconLeft.color} type={item.iconLeft.type} /></View>}                      
                       <TextInput
                         key={index}
                         onFocus={() => handleFocus(index)}
                         style={[styles.input]}
                         onChangeText={(text) => setValue(fieldName, text, true)}
                       />
-                      <Icon name="angle-right" size={25} color={'gray'} type="light" />
+                      {item.iconRight && <View style={{marginLeft:10}}><Icon name={item.iconRight.name} size={item.iconRight.size} color={item.iconRight.color} type={item.iconRight.type} /></View>}                      
+                      {focusedIndex === index && <View style={{marginRight:10}}><Icon name="times-circle" size={18} color={'gray'} type="regular" /></View>}
                     </View>
                     {/*errors[fieldName] && <Text style={{ marginTop: 2, color: 'red' }}>Champ manquant {fieldName}</Text>*/}
                     {errors[fieldName] && (errors[fieldName].message)}
