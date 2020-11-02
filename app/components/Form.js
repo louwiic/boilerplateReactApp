@@ -102,7 +102,7 @@ const Form = ({ fields, callbackSubmitForm }) => {
                     onChangeText={(text) => setValue(fieldName, text, true)}
                   />
                   {item.iconRight && <View style={{ marginLeft: 10 }}><Icon name={item.iconRight.name} size={item.iconRight.size} color={item.iconRight.color} type={item.iconRight.type} /></View>}
-                  {focusedIndex === index && <View style={{ marginRight: 10 }}><Icon name="times-circle" size={18} color={gloabalStyles.main2} type="regular" /></View>}
+                  {focusedIndex === index && <TouchableOpacity style={{ marginRight: 10 }}><Icon name="times-circle" size={18} color={gloabalStyles.main2} type="regular" /></TouchableOpacity>}
                 </View>
                 {/*errors[fieldName] && <Text style={{ marginTop: 2, color: 'red' }}>Champ manquant {fieldName}</Text>*/}
                 {errors[fieldName] && (errors[fieldName].message)}
