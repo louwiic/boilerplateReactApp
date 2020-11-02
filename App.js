@@ -39,6 +39,7 @@ import {AuthContext} from './app/components/context';
 //Nav
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import { loginReducer, initialLoginState} from './redux/features/auth/authentication'; 
+import TutorialApp from './app/components/tutorialApp.js';
 
 /* Init config */
 configureFontAwesomePro(); //Fontawsome
@@ -100,6 +101,12 @@ const App = () => {
     }, 1000);
   }, []);
 
+  if(true){
+    return(
+      <TutorialApp />
+    )
+  }
+
   if (loginState.isLoading) {
     return (
       <View style={{justifyContent: 'center', flex: 1, alignItems: 'center'}}>
@@ -128,7 +135,7 @@ const App = () => {
                       name={iconName}
                       color={color}
                       type="light" 
-                      size={size}
+                      size={size} 
                     />
                   );
                 },
