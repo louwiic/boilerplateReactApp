@@ -21,12 +21,12 @@ import moment from 'moment';
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Icon from 'react-native-fontawesome-pro';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NavigationContainer} from '@react-navigation/native';
-import {useForm, Controller} from 'react-hook-form';
-import {Input} from 'react-native-elements';
-import {useNavigation} from '@react-navigation/native';
-import {AuthContext} from '../../components/context';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { useForm, Controller } from 'react-hook-form';
+import { Input } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../../components/context';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { KeyboardAccessoryNavigation } from 'react-native-keyboard-accessory'
 
@@ -36,16 +36,16 @@ const RegisterView = () => {
   const [chosenDate, setChosenDate] = React.useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
 
-  const {register, setValue, handleSubmit, errors} = useForm();
+  const { register, setValue, handleSubmit, errors } = useForm();
   const inputEl = React.useRef();
 
   React.useEffect(() => {
-    register({name: 'text'}, {required: true});
-    register({name: 'phone'}, {required: true});
-    register({name: 'email'}, {required: true});
-    register({name: 'password'}, {required: true});
-    register({name: 'address'}, {required: true});
-    register({name: 'zipcode'}, {required: true});
+    register({ name: 'text' }, { required: true });
+    register({ name: 'phone' }, { required: true });
+    register({ name: 'email' }, { required: true });
+    register({ name: 'password' }, { required: true });
+    register({ name: 'address' }, { required: true });
+    register({ name: 'zipcode' }, { required: true });
   }, [register]);
 
 
@@ -57,11 +57,11 @@ const RegisterView = () => {
 
 
   const HandleError = () => {
-      return (
-          <>
-           <Text>Error</Text>
-          </>
-      )
+    return (
+      <>
+        <Text>Error</Text>
+      </>
+    )
   }
 
 
@@ -77,83 +77,84 @@ const RegisterView = () => {
     moment.locale('fr')
     var d = moment(date).format('LL');
     setChosenDate(d)
-   //console.warn("A date has been picked: ", date);
+    //console.warn("A date has been picked: ", date);
     hideDatePicker();
   };
 
   return (
     <View style={styles.container}>
 
-      <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior={Platform.OS=== 'ios'? "padding": null} enabled   keyboardVerticalOffset={100}>
-      <ScrollView>
-        <View style={{alignSelf: 'flex-end'}}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon
-              name={'times-circle'}
-              color={'black'}
-              type="light"
-              size={24}
-            />
-          </TouchableOpacity>
-        </View>
-        <Text
-          style={{
-            alignSelf: 'center',
-            fontSize: 24,
-            fontWeight: 'bold',
-            margin: 25,
-          }}>
-          FORMULAIRE
+      <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', }} behavior={Platform.OS === 'ios' ? "padding" : null} enabled keyboardVerticalOffset={100}>
+        <ScrollView>
+          <View style={{ alignSelf: 'flex-end' }}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon
+                name={'times-circle'}
+                color={'black'}
+                type="light"
+                size={24}
+              />
+            </TouchableOpacity>
+          </View>
+          <Text
+            style={{
+              alignSelf: 'center',
+              fontSize: 24,
+              fontWeight: 'bold',
+              margin: 25,
+            }}>
+            FORMULAIRE
         </Text>
 
-        <Text style={styles.label}>Text</Text>
-        <TextInput
-          returnKeyType = {"next"}
-          style={[styles.input, borderFocus]} 
-          onChangeText={(text) => setValue('text', text, true)}
-          maxLength={10}  //setting limit of input 
-        />
-        {/*errors.text && <HandleError />*/}
+          <Text style={styles.label}>Text</Text>
+          <TextInput
+            returnKeyType={"next"}
+            style={[styles.input, borderFocus]}
+            onChangeText={(text) => setValue('text', text, true)}
+            maxLength={10}  //setting limit of input 
+          />
+          {/*errors.text && <HandleError />*/}
 
-        <Text style={styles.label}>Phone Number</Text> 
-        <TextInput
-          returnKeyType = {"next"}
-          keyboardType={"phone-pad"}
-          style={[styles.input, borderFocus]} 
-          onChangeText={(text) => setValue('phone', text, true)}
-          maxLength={10}  //setting limit of input
-        />
-        {errors.phone && Alert.alert("Champs(s) manquant(s) phone")}
+          <Text style={styles.label}>Phone Number</Text>
+          <TextInput
+            returnKeyType={"next"}
+            keyboardType={"phone-pad"}
+            style={[styles.input, borderFocus]}
+            onChangeText={(text) => setValue('phone', text, true)}
+            maxLength={10}  //setting limit of input
+          />
+          {errors.phone && Alert.alert("Champs(s) manquant(s) phone")}
 
-        <Text style={styles.label}>Email *</Text>
-        <TextInput
-         returnKeyType = {"next"}
-         keyboardType={"email-address"}
-         style={[styles.input]}
-         onChangeText={(text) => setValue('email', text)}
-        />
-        {errors.email && Alert.alert("Champs(s) manquant(s) email")}
+          <Text style={styles.label}>Email *</Text>
+          <TextInput
+            returnKeyType={"next"}
+            keyboardType={"email-address"}
+            style={[styles.input]}
+            onChangeText={(text) => setValue('email', text)}
+          />
+          {errors.email && Alert.alert("Champs(s) manquant(s) email")}
 
-        <Text style={styles.label}>Password *</Text>
-        <TextInput
-        secureTextEntry={true}
-          style={styles.input}
-          onChangeText={(text) => setValue('password', text)}
-        />
+          <Text style={styles.label}>Password *</Text>
+          <TextInput
+            secureTextEntry={true}
+            style={styles.input}
+            onChangeText={(text) => setValue('password', text)}
+          />
 
-        <Text style={styles.label}>Birthday</Text>
-        <Pressable onPress={showDatePicker} 
-        style={{ backgroundColor: 'white',
-            borderColor: null,
-            height: 48,
-            paddingLeft:10,
-            justifyContent: "center",
-            borderRadius: 4,
-          }}>
-          <Text>{chosenDate}</Text>
-        </Pressable>
+          <Text style={styles.label}>Birthday</Text>
+          <Pressable onPress={showDatePicker}
+            style={{
+              backgroundColor: 'white',
+              borderColor: null,
+              height: 48,
+              paddingLeft: 10,
+              justifyContent: "center",
+              borderRadius: 4,
+            }}>
+            <Text>{chosenDate}</Text>
+          </Pressable>
 
-         <DateTimePickerModal
+          <DateTimePickerModal
             headerTextIOS={"Date d'anniversaire"}
             confirmTextIOS={"Selectionner"}
             cancelTextIOS={"Fermer"}
@@ -161,34 +162,34 @@ const RegisterView = () => {
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
-        />
-        {/*errors.birthday && <HandleError />*/}
-          
-        <Text style={styles.label}>Adresse *</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => setValue('address', text)}
-        />
+          />
+          {/*errors.birthday && <HandleError />*/}
 
-        <Text style={styles.label}>Zipcode</Text> 
-        <TextInput
-          keyboardType={"number-pad"}
-          style={[styles.input, borderFocus]} 
-          onChangeText={(text) => setValue('zipcode', text, true)}
-          maxLength={10}  //setting limit of input
-        />
-        {errors.phone && Alert.alert("Champs(s) manquant(s) phone")}
+          <Text style={styles.label}>Adresse *</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(text) => setValue('address', text)}
+          />
 
-        <TouchableOpacity onPress={handleSubmit(submit)}>
-          <Text
-            style={styles.button}
-            color="white"
-            title="S'inscrire"
-            
-          >Valider</Text>
-        </TouchableOpacity>
-      </ScrollView>
-      </KeyboardAvoidingView>     
+          <Text style={styles.label}>Zipcode</Text>
+          <TextInput
+            keyboardType={"number-pad"}
+            style={[styles.input, borderFocus]}
+            onChangeText={(text) => setValue('zipcode', text, true)}
+            maxLength={10}  //setting limit of input
+          />
+          {errors.phone && Alert.alert("Champs(s) manquant(s) phone")}
+
+          <TouchableOpacity onPress={handleSubmit(submit)}>
+            <Text
+              style={styles.button}
+              color="white"
+              title="S'inscrire"
+
+            >Valider</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 };
