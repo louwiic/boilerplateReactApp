@@ -66,9 +66,7 @@ const HomeView = ({navigation}) => {
     reload()
   }, [page]);
 
-  function reload(){
-    
-    
+  function reload(){    
     API.getMovies({page:page}).then(function (response) {
       if(page === 1){
         setLoadingPR(false)
@@ -111,7 +109,7 @@ const HomeView = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={{fontWeight:"bold", fontSize:32}}>Movies</Text>
+      <Text style={{fontWeight:"bold", fontSize:32, marginLeft:20}}>Movies</Text>
       <FlatList  
           onEndReached ={handlePaginate}
           onEndReachedThreshold={0}
