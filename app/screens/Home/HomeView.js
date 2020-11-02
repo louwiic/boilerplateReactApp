@@ -10,9 +10,10 @@ import {
   StatusBar,
   Button,
   Alert,
+  FlatList,
   SectionList
 } from 'react-native';
-
+import axios from "axios";
 import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
@@ -20,10 +21,12 @@ import {useForm, Controller} from 'react-hook-form';
 import {AuthContext} from '../../components/context';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
-import List from '../../components/flatlist';
-import ItemSectionHomeList from '../../components/List/item/itemSectionHomeList';
-import headerSectionHomeList from '../../components/List/item/headerSectionHomeList';
-import SearchInList from '../../components/List/searchInList';
+import List from '../../../app/components/flatlist';
+import ItemSectionHomeList from '../../components/List/itemTemplate/home/itemSectionHomeList';
+import headerSectionHomeList from '../../components/List/itemTemplate/home/headerSectionHomeList';
+import SearchInList from '../../../app/components/List/searchInList'; 
+import { Rect } from 'react-native-svg';
+import API from '../../services/apiconfig';
 
 const DATA = [
   {
@@ -48,7 +51,8 @@ const HomeView = ({navigation}) => {
 
   const data = useSelector((state) => state.dataHomeList);
   const dispatch = useDispatch();
-
+  const [loadingPR, setLoadingPR] = React.useState(false)
+  const [page, setPage] = React.useState(1)
   const {register, setValue, handleSubmit, errors} = useForm();
   const onSubmit = (data) => Alert.alert('Form Data', JSON.stringify(data));
 
@@ -59,19 +63,34 @@ const HomeView = ({navigation}) => {
 
   React.useEffect(() => {
     //fetch data here
+    reload()
+  }, [page]);
 
-    dispatch({type: 'LOAD', data: DATA});
-  }, []);
+  function reload(){    
+    API.getMovies({page:page}).then(function (response) {
+      if(page === 1){
+        setLoadingPR(false)
+        dispatch({type: 'LOAD', data: response.data.results});
+      }else{
+        setLoadingPR(false)
+        dispatch({type: 'PAGINATE', data: response.data.results});
+      }
+    })
+    .catch(function (error) {
+      setLoadingPR(false)
+      console.log(error);
+    });
 
-  const {signOut} = React.useContext(AuthContext);
+  }
 
-  const paginate = () => {
-    //
+  const handlePaginate = () => {
+    setPage(page +1)
   }
 
   const handleRefresh =() => {
-    console.log('refresh');
-    dispatch({type: 'LOAD', data: DATA});
+    setLoadingPR(true)
+    setPage(1)
+    reload()
   }
 
   /* Separator item */
@@ -90,8 +109,19 @@ const HomeView = ({navigation}) => {
 
   return (
     <View style={styles.container}>
- 
-      <SearchInList dataList={data} />
+      <Text style={{fontWeight:"bold", fontSize:32, marginLeft:20}}>Movies</Text>
+      <FlatList  
+          onEndReached ={handlePaginate}
+          onEndReachedThreshold={0}
+          onRefresh={() => handleRefresh()}
+          refreshing={loadingPR}            
+          keyExtractor={(item, index) => index.toString()}
+          data={data.arr}
+          renderItem={({item}) => <ItemSectionHomeList navigation={navigation} item={item} />}
+        />  
+
+      {/*  Section List example show DATA on Top for format data sectionList
+      
       <SectionList
         onRefresh={() => handleRefresh()}
         refreshing={false}
@@ -103,8 +133,7 @@ const HomeView = ({navigation}) => {
         )}
         ListHeaderComponent={headerSectionHomeList}
         ItemSeparatorComponent={renderSeparator}
-      />
-      <Button title="Se deconnecter" onPress={signOut} />
+      /> */}
     </View>
   );
 }; 
@@ -118,8 +147,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    marginLeft: '4%',
-    marginRight: '4%',
     //padding: 8,
   },
   button: {

@@ -7,11 +7,11 @@ export default StyleSheet.create({
     marginHorizontal: 2,
   },
   item: {
-    backgroundColor: '#fff',
+    backgroundColor: '#fafafa',
     paddingHorizontal: 20,
     justifyContent: 'center',
     marginVertical: 8,
-    height: 120,
+    height: 200,
     borderRadius: 10,
   },
   header: {
@@ -20,9 +20,12 @@ export default StyleSheet.create({
   },
   title: {
     marginTop: 20,
-    fontSize: 24,
+    fontSize: 18,
+    width: 160,
     color: 'black',
     position: 'absolute',
     right: 0,
+    textAlign: "right",
   },
+
 });

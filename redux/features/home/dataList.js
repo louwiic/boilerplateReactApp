@@ -6,8 +6,16 @@ const dataList = (state = initState, action) => {
   switch (action.type) {
     case 'LOAD':
       state = action.data;
-      return state;
+      return {
+        ...state,
+        arr: state
+      }
 
+    case 'PAGINATE':
+      return {
+        ...state,
+        arr: [...state.arr, ...action.data]
+      } 
     case 'UPDATE':
       state.push({
         title: 'Cocktail',
@@ -21,7 +29,6 @@ const dataList = (state = initState, action) => {
       let prevState = [...state]
       if(text == ""){
 
-        console.log(prevState);
       }
 
       if (text !== '') {  
@@ -44,9 +51,6 @@ const dataList = (state = initState, action) => {
       } 
 
       return state;
-
-
-
 
       // return [
       //   ...state,

@@ -12,10 +12,11 @@ import {
 import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import ProfilView from '../../screens/Profil/ProfilView';
-import {AuthContext} from '../../components/context';
-import CameraView from '../../screens/Profil/Camera';
+import ProfilView from '../../app/screens/Profil/ProfilView';
+import {AuthContext} from '../../app/components/context';
+import CameraView from '../../app/screens/Profil/Camera';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
+import TutorialView from '../../app/components/tutorialApp';
 
 const Stack = createStackNavigator();
 
@@ -23,7 +24,6 @@ const AuthStack = ({navigation}) => {
   return (
     <Stack.Navigator >
       <Stack.Screen     
-      name="PROFIL"
       options={{
           title: 'PROFIL',
           headerStyle: {
@@ -41,10 +41,10 @@ const AuthStack = ({navigation}) => {
         }}
          name="ProfilView" component={ProfilView} />
 
-    <Stack.Screen     
-      name="camera" component={CameraView} />
+      <Stack.Screen  name="tutorial" component={TutorialView} />
+      <Stack.Screen options={{headerShown: false}} name="camera" component={CameraView} />
     </Stack.Navigator>
   );
 };
 
-export default AuthStack;
+  export default AuthStack;

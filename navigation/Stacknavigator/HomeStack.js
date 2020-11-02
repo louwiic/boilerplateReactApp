@@ -12,8 +12,8 @@ import {
 import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import HomeView from '../../screens/Home/HomeView';
-import DetailView from '../../screens/Home/DetailView';
+import HomeView from '../../app/screens/Home/HomeView';
+import DetailView from '../../app/screens/Home/DetailView';
 
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 
