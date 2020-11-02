@@ -26,9 +26,10 @@ const HomeView = () => {
 
 
   const fields = [
-    { name: "firstname", required: <Text>Error firstname</Text> },
+    { name: "firstname", required: <Text>Error firstname</Text>, iconLeft:''  },
     { name: "lastname", required: <Text>Error firstname</Text> },
     { name: "address", required: <Text>Error firstname</Text>, type: 'email' },
+    { name: "zipcode", required: <Text>Error zipcode</Text>, maxLenght: 4 },
   ]
 
 
@@ -39,6 +40,14 @@ const HomeView = () => {
       console.log(item);
 
       let emailType = {}
+      let itemMaxLength = {}
+      if(item.maxLenght){
+        itemMaxLength = {
+          message: <Text>ce champ ne doit pas contenir plus de {item.maxLenght} charactères</Text>,
+          value: item.maxLenght
+
+        }
+      }
       if (item.type == "email") {
         emailType = {
           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -46,8 +55,7 @@ const HomeView = () => {
         }
       }
 
-      register({ name: item.name }, { required: item.required, pattern: emailType });
-
+      register({ name: item.name }, { required: item.required, pattern: emailType, maxLength: itemMaxLength })
     })
     /* register({ name: 'firstname' }, { required: <Text>Error firstname</Text> });
     register({ name: 'lastname' }, { required: <Text>error lastname</Text> });
@@ -78,17 +86,22 @@ const HomeView = () => {
             fields.map((item, index) => {
               let fieldName = item.name;
               return (
-                <>
-                  <Text style={styles.label}> {fieldName} *</Text>
-                  <TextInput
-                    key={index}
-                    onFocus={() => handleFocus(index)}
-                    style={[styles.input, { borderWidth: 1, borderColor: focusedIndex === index ? 'orange' : "transparent" }]}
-                    onChangeText={(text) => setValue(fieldName, text, true)}
-                  />
-                  {/*errors[fieldName] && <Text style={{ marginTop: 2, color: 'red' }}>Champ manquant {fieldName}</Text>*/}
-                  {errors[fieldName] && (errors[fieldName].message)}
-                  {item.customComponent && item.customComponent}
+                <>    
+                    <Text style={styles.label}> {fieldName} *</Text>
+                    <View style={[styles.sectionStyle, { borderWidth: 1, borderColor: focusedIndex === index ? 'orange' : "transparent" }]}>
+                      <Icon name="angle-right" size={25} color={'gray'} type="light" />
+                      <TextInput
+                        key={index}
+                        onFocus={() => handleFocus(index)}
+                        style={[styles.input]}
+                        onChangeText={(text) => setValue(fieldName, text, true)}
+                      />
+                      <Icon name="angle-right" size={25} color={'gray'} type="light" />
+                    </View>
+                    {/*errors[fieldName] && <Text style={{ marginTop: 2, color: 'red' }}>Champ manquant {fieldName}</Text>*/}
+                    {errors[fieldName] && (errors[fieldName].message)}
+                    {item.customComponent && item.customComponent}
+                
                 </>
               )
             })
@@ -108,11 +121,6 @@ const HomeView = () => {
 };
 
 const styles = StyleSheet.create({
-  label: {
-    color: 'black',
-    margin: 20,
-    marginLeft: 0,
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -120,6 +128,22 @@ const styles = StyleSheet.create({
     marginLeft: '4%',
     marginRight: '4%',
     //padding: 8,
+  },
+  label: {
+    color: 'black',
+    margin: 20,
+    marginLeft: 0,
+  },
+  sectionStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F1F1F1',
+    borderWidth: 0.5,
+    borderColor: '#000',
+    height: 40,
+    borderRadius: 5,
+    margin: 10,
   },
   button: {
     marginTop: 40,
@@ -129,11 +153,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   input: {
-    backgroundColor: '#F1F1F1',
+    flex: 1,
+    /* backgroundColor: '#F1F1F1',
     borderColor: null,
     height: 40,
     padding: 10,
-    borderRadius: 4,
+    borderRadius: 4, */
   },
 });
 
