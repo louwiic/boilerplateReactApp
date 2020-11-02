@@ -50,7 +50,7 @@ const store = createStore(allReducers); //store redux
 const App = () => {
 
   const [loginState, dispatch] = React.useReducer( loginReducer, initialLoginState);
-
+  const [displayTutorial, setDisplayTutorial] = React.useState({ firstLaunched: "true" })
   const authContext = React.useMemo(() => ({
     signIn: async (credentials) => {
       let userToken = null;
@@ -88,23 +88,28 @@ const App = () => {
 
   React.useEffect(() => {
     setTimeout(async () => {
-      // setIsLoading(false);
+      // setIsLoading(false); 
       let userToken = null;
-      try {
+      let firstLaunchKey = null;
+      try {        
+        await AsyncStorage.setItem('firstLaunchKey', "true")
         userToken = await AsyncStorage.getItem('userToken');
-        console.log(userToken);
+        firstLaunchKey = await AsyncStorage.getItem('firstLaunchKey');
+        
       } catch (e) {
         console.log(e);
       }
       // console.log('user token: ', userToken);
+      setDisplayTutorial({firstLaunched: String(firstLaunchKey)})
       dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
     }, 1000);
   }, []);
 
-  if(true){
-    return(
-      <TutorialApp />
-    )
+
+  const onLoadTutorial = async (state) => {
+    setDisplayTutorial({firstLaunched: state });
+    await AsyncStorage.setItem('firstLaunchKey', state);
+  
   }
 
   if (loginState.isLoading) {
@@ -117,6 +122,8 @@ const App = () => {
   return (
     <Provider store={store}>
       <AuthContext.Provider value={authContext}>
+      {
+        displayTutorial.firstLaunched == "true" ? <TutorialApp onLoadTutorial={onLoadTutorial} /> : 
         <NavigationContainer>
           {loginState.userToken !== null ? (
             <Tab.Navigator
@@ -152,6 +159,7 @@ const App = () => {
             <AuthStack />
           )}
         </NavigationContainer>
+      }
       </AuthContext.Provider>
     </Provider>
   );

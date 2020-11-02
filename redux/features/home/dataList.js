@@ -52,9 +52,6 @@ const dataList = (state = initState, action) => {
 
       return state;
 
-
-
-
       // return [
       //   ...state,
       //   {
