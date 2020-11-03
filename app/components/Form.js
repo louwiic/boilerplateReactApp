@@ -21,7 +21,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import gloabalStyles from '../global/gloabalStyles';
 import { log } from 'react-native-reanimated';
 
-const Form = ({ fields, callbackSubmitForm }) => {
+const Form = ({ fields, callbackSubmitForm, containerStyle, submitBtn}) => {
   const { register, setValue, handleSubmit, errors } = useForm();
   const [focusedIndex, setFocusIndex] = React.useState(null)
 
@@ -41,8 +41,8 @@ const Form = ({ fields, callbackSubmitForm }) => {
       console.log('Fields ###')
       console.log(item);
 
-      let error = <View style={styles.containerErrorMsg}><Text style={{ color: "#e53935" }}>{item.required}</Text></View>
-      let errorEmail = <View style={styles.containerErrorMsg}><Text style={{ color: "#e53935" }}>Adresse email incorrect</Text></View>
+      let error = <View style={styles.containerErrorMsg}><Text style={styles.errorMsg}>{item.required}</Text></View>
+      let errorEmail = <View style={styles.containerErrorMsg}><Text style={styles.errorMsg}>Adresse email incorrect</Text></View>
 
       let emailType = {}
       let itemMaxLength = {}
@@ -82,8 +82,8 @@ const Form = ({ fields, callbackSubmitForm }) => {
 
   }
   return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', }} behavior={Platform.OS === 'ios' ? "padding" : null} enabled keyboardVerticalOffset={100}>
+    <View style={containerStyle}>
+      <KeyboardAvoidingView style={{ flexDirection: 'column', justifyContent: 'center', }} behavior={Platform.OS === 'ios' ? "padding" : null} enabled keyboardVerticalOffset={100}>
         {
           fields.map((item, index) => {
             let fieldName = item.name;
@@ -112,11 +112,12 @@ const Form = ({ fields, callbackSubmitForm }) => {
             )
           })
         }
+     
         <TouchableOpacity style={styles.button} onPress={handleSubmit(submit)}>
-          <Text
-            style={styles.titleBtn}
-          >
-            C'EST PARTI ! </Text>
+            <Text style={styles.titleBtn}>C'EST PARTI ! </Text>
+            <View style={{position: "absolute", right: "7%", padding:10, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.2)'}}>
+              <Icon name={"chevron-right"} size={18} color={"#FFFFFF"} type={"solid"} />
+            </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </View>
@@ -129,7 +130,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     //justifyContent: 'center',
   },
-  containerErrorMsg: { marginLeft: "0%" },
+  containerErrorMsg: { marginLeft: "0%"},
+  errorMsg: {color: "#e53935", fontSize:10, marginTop:-5},
   label: {
     color: 'black',
     // margin: 8,
@@ -165,6 +167,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 40,
+    paddingLeft: 10
     /* backgroundColor: '#F1F1F1',
     borderColor: null,
     height: 40,
