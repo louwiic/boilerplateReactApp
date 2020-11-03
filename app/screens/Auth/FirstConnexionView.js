@@ -24,7 +24,8 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../../styles/LoginView.js';
 import { AuthContext } from '../../components/context';
 import Form from '../../components/Form';
-const LoginView = () => {
+
+const FirstConnexionView = () => {
   const navigation = useNavigation();
 
   const { register, setValue, handleSubmit, errors } = useForm();
@@ -90,4 +91,4 @@ const LoginView = () => {
   );
 };
 
-export default LoginView;
+export default FirstConnexionView;

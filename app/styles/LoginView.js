@@ -8,7 +8,7 @@ export default StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
+    //justifyContent: 'center',
     paddingTop: 20,
     marginLeft: '4%',
     marginRight: '4%',

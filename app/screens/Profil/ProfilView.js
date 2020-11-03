@@ -152,12 +152,12 @@ const ProfilView = ({ route, navigation }) => {
 
       </View>
       <View style={{ flex: 2 }}>
-        {/* <FlatList
+        <FlatList
           keyExtractor={(item, index) => index.toString()}
           data={list}
           renderItem={renderItem}
-        /> */}
-        <Form />
+        />
+        
       </View>
     </View>
   )
