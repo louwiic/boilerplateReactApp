@@ -24,17 +24,25 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../../styles/LoginView.js';
 import { AuthContext } from '../../components/context';
 import Form from '../../components/Form';
+
+
 const LoginView = () => {
+
   const navigation = useNavigation();
 
-  const { register, setValue, handleSubmit, errors } = useForm();
-
-  React.useEffect(() => {
-    register({ name: 'login' }, { required: true });
-    register({ name: 'password' });
-  }, [register]);
-
   const { signIn } = React.useContext(AuthContext);
+
+  const submitBtn = {title: "C'EST PARTIE !"}
+
+  const firstConnectTitle = 
+      <TouchableOpacity activeOpacity={0.3} style={{alignItems:"center", justifyContent:"center", marginTop:8}} onPress={() => navigation.navigate('FirstConnexionView')}>
+        <Text style={{fontWeight: "300"}}>Premiére connexion ?</Text>
+      </TouchableOpacity>
+
+  const fields = [
+    { name: "login", label: "Adresse email", required: "Adresse email obligatoire*", iconLeft: null, type: "email", setValue: 'loic@mail.com' },
+    { name: "password", label: "Mot de passe", required: "Mot de passe obligatoire*", maxLength: 2, type: "password", customComponent: firstConnectTitle },
+  ]
 
   const onSubmit = async (data) => {
     if (data.login && data.password) {
@@ -48,34 +56,18 @@ const LoginView = () => {
   };
 
   const callbackSubmitForm = (data) => {
+    signIn(data)
     console.log("In logiinView")
-    console.log(data)
+    console.log({data})
   }
 
-  const openFisrtConnect = () => {
-    console.log("first connexion");
-  }
 
-  const firstConnectTitle = 
-      <TouchableOpacity style={{alignItems:"center", justifyContent:"center", marginTop:8}} onPress={openFisrtConnect}>
-        <Text style={{fontWeight: "300"}}>Premiére connexion ?</Text>
-      </TouchableOpacity>
-
-
-  const fields = [
-    { name: "Adresse email", required: "Adresse email obligatoire*", iconLeft: null, type: "email", setValue: 'loic@mail.com' },
-    { name: "Mot de passe", required: "Mot de passe obligatoire*", maxLength: 2, type: "password", customComponent: firstConnectTitle },
-  ]
-
-  const submitBtn = {title: "C'EST PARTIE !", containerStyle: {}}
   return (
     <View style={styles.container}>
       <Image
         style={{
           position: "absolute",
           alignSelf: 'center',
-          fontSize: 24,
-          fontWeight: 'bold',
           top: "12%",
         }}
         source={require("../../assets/branding.png")}

@@ -24,41 +24,40 @@ import styles from '../../styles/LoginView.js';
 import { AuthContext } from '../../components/context';
 import Form from '../../components/Form';
 
-const FirstConnexionView = ({navigation}) => {
+const ConfirmFirstConnexionView = ({navigation}) => {
 
-  const { register, setValue, handleSubmit, errors } = useForm();
+    const { signIn } = React.useContext(AuthContext);
+    const { register, setValue, handleSubmit, errors } = useForm();   
 
-  React.useEffect(() => {
-    register({ name: 'login' }, { required: true });
-    register({ name: 'password' });
-  }, [register]);
+    React.useEffect(() => {
+        register({ name: 'login' }, { required: true });
+        register({ name: 'password' });
+    }, [register]);
 
-  const { signIn } = React.useContext(AuthContext);
 
-  const onSubmit = async (data) => {
-    if (data.login && data.password) {
-      try {
-        await AsyncStorage.setItem('authToken', 'ldZdkd@d2!');
-      } catch (e) {
-        // saving error
-      }
+    const onSubmit = async (data) => {
+        if (data.login && data.password) {
+        try {
+            await AsyncStorage.setItem('authToken', 'ldZdkd@d2!');
+        } catch (e) {
+            // saving error
+        }
 
-    }
-  };
+        }
+    };
 
   const callbackSubmitForm = (data) => {
-
-    navigation.navigate('ConfirmFirstConnexionView', {dataForm: data})
+    console.log("In logiinView")
+    console.log(data)
   }
 
   const submitBtn = {
-      title: "SUIVANT"
+      title: "C'EST PARTI !"
   }
 
   const fields = [
-    { name:"email", label: "Adresse email", required: "Adresse email obligatoire*", iconLeft: null, type: "email", setValue: 'loic@mail.com' },
-    { name:"identifiant", label: "Identifiant client", required: "Identifiant client obligatoire*", iconLeft: null },
-    { name:"password", label: "Mot de passe temporaire", required: "Mot de passe obligatoire*", maxLength: 2, type: "password" },
+    { name: "newpassword", label: "Nouveau mot de passe", required: "Champ obligatoire*", maxLength: 2, type: "password" },
+    { name: "confirmpassword", label: "Confirmation du mot de passe", required: "Champ obligatoire*", maxLength: 2, type: "password" },
   ]
 
   return (
@@ -84,8 +83,10 @@ const FirstConnexionView = ({navigation}) => {
         />
 
         <View style={{ /* position: "absolute", */  marginTop: "30%"}}>
-        <Text style={{fontWeight: 'bold'}}>{I18n.t("firstCnxTitle")}</Text>
-            <Text style={{marginTop: 8 }}>{I18n.t("firstCnxSubtitle")}</Text>
+        <Text style={{fontWeight: 'bold'}}>{I18n.t("confirmAccountTitle")}</Text>
+            <Text style={{marginTop: 8 }}>{I18n.t("confirmAccountSubtitle")}
+            <Text style={{textDecorationLine: "underline"}}>{I18n.t("confirmAccountSubtitleUnderline")}</Text>
+            </Text>
             <Form containerStyle={{marginTop: 32, marginBottom: 32}} submitBtn={submitBtn} fields={fields} callbackSubmitForm={callbackSubmitForm} />        
         </View>
  
@@ -93,4 +94,4 @@ const FirstConnexionView = ({navigation}) => {
   );
 };
 
-export default FirstConnexionView;
+export default ConfirmFirstConnexionView;

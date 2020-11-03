@@ -83,15 +83,15 @@ const Form = ({ fields, callbackSubmitForm, containerStyle, submitBtn}) => {
   }
   return (
     <View style={containerStyle}>
-      <KeyboardAvoidingView style={{ flexDirection: 'column', justifyContent: 'center', }} behavior={Platform.OS === 'ios' ? "padding" : null} enabled keyboardVerticalOffset={100}>
+      <KeyboardAvoidingView style={{ flex:1, flexDirection: 'column', justifyContent: 'center', }} behavior={Platform.OS === 'ios' ? "padding" : null} enabled keyboardVerticalOffset={100}>
         {
           fields.map((item, index) => {
             let fieldName = item.name;
-            setValue(item.name, "dldsk", true);
+            let label = item.label;
 
             return (
-              <>
-                <Text style={styles.label}> {fieldName} {item.required ? "*" : ""} </Text>
+              <View key={index}>
+                <Text style={styles.label}> {label} {item.required ? "*" : ""} </Text>
                 <View style={[styles.sectionStyle, { borderColor: focusedIndex === index ? gloabalStyles.main2 : gloabalStyles.gray }]}>
                   {item.iconLeft && <View style={{ marginLeft: 10 }}><Icon name={item.iconLeft.name} size={item.iconLeft.size} color={item.iconLeft.color} type={item.iconLeft.type} /></View>}
                   <TextInput
@@ -108,13 +108,12 @@ const Form = ({ fields, callbackSubmitForm, containerStyle, submitBtn}) => {
                 {errors[fieldName] && (errors[fieldName].message)}
                 {item.customComponent && item.customComponent}
 
-              </>
+              </View>
             )
           })
         }
-     
-        <TouchableOpacity style={styles.button} onPress={handleSubmit(submit)}>
-            <Text style={styles.titleBtn}>C'EST PARTI ! </Text>
+        <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={handleSubmit(submit)}>
+            <Text style={styles.titleBtn}>{submitBtn ? submitBtn.title : "" } </Text>
             <View style={{position: "absolute", right: "7%", padding:10, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.2)'}}>
               <Icon name={"chevron-right"} size={18} color={"#FFFFFF"} type={"solid"} />
             </View>
@@ -158,6 +157,7 @@ const styles = StyleSheet.create({
     backgroundColor: gloabalStyles.main,
     height: 56,
     borderRadius: 5,
+ 
   },
   titleBtn: {
     color: 'white',

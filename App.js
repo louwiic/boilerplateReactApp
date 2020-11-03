@@ -8,7 +8,7 @@
 
 import 'react-native-gesture-handler';
 import React from 'react';
-import localization from 'moment/locale/fr';
+import localization from 'moment/locale/fr'; 
 import {
   SafeAreaView,
   StyleSheet,
