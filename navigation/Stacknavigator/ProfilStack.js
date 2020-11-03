@@ -42,7 +42,6 @@ const AuthStack = ({navigation}) => {
          name="ProfilView" component={ProfilView} />
 
       <Stack.Screen  name="tutorial" component={TutorialView} />
-      <Stack.Screen  name="tutorial" component={TutorialView} />
       <Stack.Screen options={{headerShown: false}} name="camera" component={CameraView} />
     </Stack.Navigator>
   );

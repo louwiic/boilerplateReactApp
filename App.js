@@ -8,7 +8,7 @@
 
 import 'react-native-gesture-handler';
 import React from 'react';
-import localization from 'moment/locale/fr';
+import localization from 'moment/locale/fr'; 
 import {
   SafeAreaView,
   StyleSheet,
@@ -40,6 +40,7 @@ import { AuthContext } from './app/components/context';
 import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
 import { loginReducer, initialLoginState } from './redux/features/auth/authentication';
 import TutorialApp from './app/components/tutorialApp.js';
+import gloabalStyles from './app/global/gloabalStyles.js';
 
 /* Init config */
 configureFontAwesomePro(); //Fontawsome
@@ -130,25 +131,29 @@ const App = () => {
                   screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
                       let iconName;
+                      let type;
                       if (route.name === 'Home') {
-                        iconName = focused ? 'home' : 'home';
+                        iconName = focused ? 'fire' : 'fire';
+                        type = focused ? 'solid' : 'light';
                       } else if (route.name === 'Form') {
-                        iconName = focused ? 'file-contract' : 'file-contract';
+                        iconName = focused ? 'handshake-alt' : 'handshake-alt';
+                        type = focused ? 'solid' : 'light';
                       } else if (route.name === 'Profil') {
-                        iconName = focused ? 'user-circle' : 'user-circle';
+                        iconName = focused ? 'user' : 'user';
+                        type = focused ? 'solid' : 'light';
                       }
                       return (
                         <Icon
                           name={iconName}
                           color={color}
-                          type="light"
+                          type={type}
                           size={size}
                         />
                       );
                     },
                   })}
                   tabBarOptions={{
-                    activeTintColor: global.headerColor,
+                    activeTintColor: gloabalStyles.main,
                     inactiveTintColor: 'gray',
                   }}>
                   <Tab.Screen name="Home" component={HomeStack} />
