@@ -8,7 +8,7 @@ import {AuthContext} from '../components/context';
 import {useSelector, useDispatch} from 'react-redux';
 
 const baseUrl = 'https://api.geko.re';
-const apiVersion = 'v1';
+const apiVersion = 'version';
 const baseUrlImage = '';
 var url = '';
 
