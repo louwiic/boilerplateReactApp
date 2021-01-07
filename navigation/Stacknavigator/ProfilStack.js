@@ -21,12 +21,12 @@ const Stack = createStackNavigator();
 
 const AuthStack = ({navigation}) => {
   return (
-    <Stack.Navigator >
-      <Stack.Screen     
-      options={{
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{
           title: 'PROFIL',
           headerStyle: {
-            backgroundColor: "#ff5722",
+            backgroundColor: '#ff5722',
           },
           headerTintColor: '#f0f0f0',
           headerBackTitle: 'retour',
@@ -38,11 +38,17 @@ const AuthStack = ({navigation}) => {
             letterSpacing: -0.08,
           },
         }}
-         name="ProfilView" component={ProfilView} />
+        name="ProfilView"
+        component={ProfilView}
+      />
 
-    <Stack.Screen options={{headerShown: false}} name="camera" component={CameraView} />
+      <Stack.Screen
+        options={{headerShown: false, tabBarVisible: false}}
+        name="camera"
+        component={CameraView}
+      />
     </Stack.Navigator>
   );
 };
 
-  export default AuthStack;
+export default AuthStack;

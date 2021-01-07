@@ -11,9 +11,9 @@ import {
   Button,
   Alert,
   FlatList,
-  SectionList
+  SectionList,
 } from 'react-native';
-import axios from "axios";
+import axios from 'axios';
 import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
@@ -24,8 +24,8 @@ import {useSelector} from 'react-redux';
 import List from '../../../app/components/flatlist';
 import ItemSectionHomeList from '../../components/List/itemTemplate/home/itemSectionHomeList';
 import headerSectionHomeList from '../../components/List/itemTemplate/home/headerSectionHomeList';
-import SearchInList from '../../../app/components/List/searchInList'; 
-import { Rect } from 'react-native-svg';
+import SearchInList from '../../../app/components/List/searchInList';
+import {Rect} from 'react-native-svg';
 import API from '../../services/apiconfig';
 
 const DATA = [
@@ -48,11 +48,10 @@ const DATA = [
 ];
 
 const HomeView = ({navigation}) => {
-
   const data = useSelector((state) => state.dataHomeList);
   const dispatch = useDispatch();
-  const [loadingPR, setLoadingPR] = React.useState(false)
-  const [page, setPage] = React.useState(1)
+  const [loadingPR, setLoadingPR] = React.useState(false);
+  const [page, setPage] = React.useState(1);
   const {register, setValue, handleSubmit, errors} = useForm();
   const onSubmit = (data) => Alert.alert('Form Data', JSON.stringify(data));
 
@@ -62,38 +61,49 @@ const HomeView = ({navigation}) => {
   }, [register]);
 
   React.useEffect(() => {
-    //fetch data here
-    reload()
+    reload(page);
+  }, []);
+
+  //Relaod after change page
+  React.useEffect(() => {
+    if (page > 1) {
+      //fetch data here
+      var timer = setTimeout(() => {
+        reload(page);
+      }, 0);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [page]);
 
-  function reload(){
-    
-    
-    API.getMovies({page:page}).then(function (response) {
-      if(page === 1){
-        setLoadingPR(false)
-        dispatch({type: 'LOAD', data: response.data.results});
-      }else{
-        setLoadingPR(false)
-        dispatch({type: 'PAGINATE', data: response.data.results});
-      }
-    })
-    .catch(function (error) {
-      setLoadingPR(false)
-      console.log(error);
-    });
-
+  function reload(page) {
+    API.getMovies({page: page})
+      .then(function (response) {
+        if (page === 1) {
+          setLoadingPR(false);
+          dispatch({type: 'LOAD', data: response.data.results});
+        } else {
+          setLoadingPR(false);
+          dispatch({type: 'PAGINATE', data: response.data.results});
+        }
+      })
+      .catch(function (error) {
+        setLoadingPR(false);
+        console.log(error);
+      });
   }
 
   const handlePaginate = () => {
-    setPage(page +1)
-  }
+    setPage(page + 1);
+  };
 
-  const handleRefresh =() => {
-    setLoadingPR(true)
-    setPage(1)
-    reload()
-  }
+  const handleRefresh = () => {
+    setLoadingPR(true);
+    setPage(1);
+    reload(1);
+  };
 
   /* Separator item */
   const renderSeparator = () => {
@@ -111,16 +121,18 @@ const HomeView = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={{fontWeight:"bold", fontSize:32}}>Movies</Text>
-      <FlatList  
-          onEndReached ={handlePaginate}
-          onEndReachedThreshold={0}
-          onRefresh={() => handleRefresh()}
-          refreshing={loadingPR}            
-          keyExtractor={(item, index) => index.toString()}
-          data={data.arr}
-          renderItem={({item}) => <ItemSectionHomeList navigation={navigation} item={item} />}
-        />  
+      <Text style={{fontWeight: 'bold', fontSize: 32}}> Movies</Text>
+      <FlatList
+        onEndReached={handlePaginate}
+        onEndReachedThreshold={0}
+        onRefresh={() => handleRefresh()}
+        refreshing={loadingPR}
+        keyExtractor={(item, index) => index.toString()}
+        data={data.arr}
+        renderItem={({item}) => (
+          <ItemSectionHomeList navigation={navigation} item={item} />
+        )}
+      />
 
       {/*  Section List example show DATA on Top for format data sectionList
       
@@ -138,7 +150,7 @@ const HomeView = ({navigation}) => {
       /> */}
     </View>
   );
-}; 
+};
 
 const styles = StyleSheet.create({
   label: {
