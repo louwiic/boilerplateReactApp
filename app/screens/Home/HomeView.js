@@ -11,10 +11,9 @@ import {
   Button,
   Alert,
   FlatList,
-  SectionList
+  SectionList,
 } from 'react-native';
-import axios from "axios";
-import I18n from '../../utils/ i18n';
+import axios from 'axios';
 import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
@@ -25,8 +24,8 @@ import {useSelector} from 'react-redux';
 import List from '../../../app/components/flatlist';
 import ItemSectionHomeList from '../../components/List/itemTemplate/home/itemSectionHomeList';
 import headerSectionHomeList from '../../components/List/itemTemplate/home/headerSectionHomeList';
-import SearchInList from '../../../app/components/List/searchInList'; 
-import { Rect } from 'react-native-svg';
+import SearchInList from '../../../app/components/List/searchInList';
+import {Rect} from 'react-native-svg';
 import API from '../../services/apiconfig';
 import gloabalStyles from '../../global/gloabalStyles';
 import ItemLastOffer from '../../components/List/itemTemplate/home/itemLastOffer';
@@ -72,11 +71,10 @@ const CATEGORIES = [
 ];
 
 const HomeView = ({navigation}) => {
-
   const data = useSelector((state) => state.dataHomeList);
   const dispatch = useDispatch();
-  const [loadingPR, setLoadingPR] = React.useState(false)
-  const [page, setPage] = React.useState(1)
+  const [loadingPR, setLoadingPR] = React.useState(false);
+  const [page, setPage] = React.useState(1);
   const {register, setValue, handleSubmit, errors} = useForm();
   const onSubmit = (data) => Alert.alert('Form Data', JSON.stringify(data));
 
@@ -86,36 +84,50 @@ const HomeView = ({navigation}) => {
   }, [register]);
 
   React.useEffect(() => {
-    //fetch data here
-    reload()
+    reload(page);
+  }, []);
+
+  //Relaod after change page
+  React.useEffect(() => {
+    if (page > 1) {
+      //fetch data here
+      var timer = setTimeout(() => {
+        reload(page);
+      }, 0);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [page]);
 
-  function reload(){    
-    API.getMovies({page:page}).then(function (response) {
-      if(page === 1){
-        setLoadingPR(false)
-        dispatch({type: 'LOAD', data: response.data.results});
-      }else{
-        setLoadingPR(false)
-        dispatch({type: 'PAGINATE', data: response.data.results});
-      }
-    })
-    .catch(function (error) {
-      setLoadingPR(false)
-      console.log(error);
-    });
 
+  function reload(page) {
+    API.getMovies({page: page})
+      .then(function (response) {
+        if (page === 1) {
+          setLoadingPR(false);
+          dispatch({type: 'LOAD', data: response.data.results});
+        } else {
+          setLoadingPR(false);
+          dispatch({type: 'PAGINATE', data: response.data.results});
+        }
+      })
+      .catch(function (error) {
+        setLoadingPR(false);
+        console.log(error);
+      });
   }
 
   const handlePaginate = () => {
-    setPage(page +1)
-  }
+    setPage(page + 1);
+  };
 
-  const handleRefresh =() => {
-    setLoadingPR(true)
-    setPage(1)
-    reload()
-  }
+  const handleRefresh = () => {
+    setLoadingPR(true);
+    setPage(1);
+    reload(1);
+  };
 
   /* Separator item */
   const renderSeparator = () => {
@@ -132,23 +144,20 @@ const HomeView = ({navigation}) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={{justifyContent: "space-between", flexDirection: "row", marginHorizontal:"4%"}}>
-        <Text style={{fontWeight:"700", fontSize:16, }}>{I18n.t('titleLastOffers')}</Text>
-        <Text  style={{fontWeight:"700", fontSize:13, color: gloabalStyles.main}}>Tout afficher</Text>
-      </View>
-      
-      <FlatList  
-          horizontal={true}
-          showsHorizontalScrollIndicator={false} 
-          onEndReached ={handlePaginate}
-          onEndReachedThreshold={0}
-          onRefresh={() => handleRefresh()}
-          refreshing={loadingPR}            
-          keyExtractor={(item, index) => index.toString()}
-          data={DATA}
-          renderItem={({item}) => <ItemLastOffer navigation={navigation} item={item} />}
-        />  
+    <View style={styles.container}>
+      <Text style={{fontWeight: 'bold', fontSize: 32}}> Movies</Text>
+      <FlatList
+        onEndReached={handlePaginate}
+        onEndReachedThreshold={0}
+        onRefresh={() => handleRefresh()}
+        refreshing={loadingPR}
+        keyExtractor={(item, index) => index.toString()}
+        data={data.arr}
+        renderItem={({item}) => (
+          <ItemSectionHomeList navigation={navigation} item={item} />
+        )}
+      />
+
 
    
       
@@ -197,7 +206,7 @@ const HomeView = ({navigation}) => {
       /> */}
     </ScrollView>
   );
-}; 
+};
 
 const styles = StyleSheet.create({
   label: {

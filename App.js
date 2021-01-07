@@ -37,55 +37,24 @@ import Form from './app/components/Form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from './app/components/context';
 //Nav
-import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
-import { loginReducer, initialLoginState } from './redux/features/auth/authentication';
-import TutorialApp from './app/components/tutorialApp.js';
-import gloabalStyles from './app/global/gloabalStyles.js';
+
+import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
+import {
+  loginReducer,
+  initialLoginState,
+} from './redux/features/auth/authentication';
+import {ProvideAuth} from './app/hook/useAuth.js';
+import {useSelector, useDispatch} from 'react-redux';
+
 
 /* Init config */
 configureFontAwesomePro(); //Fontawsome
 const Tab = createBottomTabNavigator(); //BottomTab
 const store = createStore(allReducers); //store redux
 
-
 const App = () => {
-
-  const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-  const [displayTutorial, setDisplayTutorial] = React.useState({ firstLaunched: "true" })
-  const authContext = React.useMemo(() => ({
-    signIn: async (credentials) => {
-      let userToken = null;
-      if (credentials.login && credentials.password) {
-        userToken = 'kdj@d!';
-        try {
-          await AsyncStorage.setItem('userToken', userToken);
-        } catch (e) {
-          console.log(e);
-        }
-      }
-      dispatch({ type: 'LOGIN', id: credentials.login, token: userToken });
-    },
-    signOut: async () => {
-      try {
-        await AsyncStorage.removeItem('userToken');
-      } catch (e) {
-        console.log(e);
-      }
-      dispatch({ type: 'LOGOUT' });
-    },
-    signUp: async (credentials) => {
-      let userToken = null;
-      if (credentials) {
-        userToken = 'kdj@d!';
-        try {
-          await AsyncStorage.setItem('userToken', userToken);
-        } catch (e) {
-          console.log(e);
-        }
-      }
-      dispatch({ type: 'LOGIN', id: credentials.login, token: userToken });
-    },
-  }));
+  const loginState = useSelector((state) => state.loginReducer);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     setTimeout(async () => {
@@ -120,53 +89,63 @@ const App = () => {
       </View>
     );
   }
+
+  function getTabBarVisible(route) {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : route.params?.screen || 'Home';
+
+    if (routeName === 'camera') {
+      return false;
+    }
+    return true;
+  }
+
   return (
-    <Provider store={store}>
-      <AuthContext.Provider value={authContext}>
-        {
-          displayTutorial.firstLaunched == "true" ? <TutorialApp onLoadTutorial={onLoadTutorial} /> :
-            <NavigationContainer>
-              {loginState.userToken !== null ? (
-                <Tab.Navigator
-                  screenOptions={({ route }) => ({
-                    tabBarIcon: ({ focused, color, size }) => {
-                      let iconName;
-                      let type;
-                      if (route.name === 'Home') {
-                        iconName = focused ? 'fire' : 'fire';
-                        type = focused ? 'solid' : 'light';
-                      } else if (route.name === 'Form') {
-                        iconName = focused ? 'handshake-alt' : 'handshake-alt';
-                        type = focused ? 'solid' : 'light';
-                      } else if (route.name === 'Profil') {
-                        iconName = focused ? 'user' : 'user';
-                        type = focused ? 'solid' : 'light';
-                      }
-                      return (
-                        <Icon
-                          name={iconName}
-                          color={color}
-                          type={type}
-                          size={size}
-                        />
-                      );
-                    },
-                  })}
-                  tabBarOptions={{
-                    activeTintColor: gloabalStyles.main,
-                    inactiveTintColor: 'gray',
-                  }}>
-                  <Tab.Screen name="Home" component={HomeStack} />
-                  <Tab.Screen name="Form" component={FormView} />
-                  <Tab.Screen name="Profil" component={ProfilStack} />
-                </Tab.Navigator>
-              ) : (
-                  <AuthStack />
-                )}
-            </NavigationContainer>
-        }
-      </AuthContext.Provider>
-    </Provider>
+    <ProvideAuth>
+      <NavigationContainer>
+        {loginState.userToken !== null ? (
+          <Tab.Navigator
+            screenOptions={({route}) => ({
+              tabBarIcon: ({focused, color, size}) => {
+                let iconName;
+                if (route.name === 'Home') {
+                  iconName = focused ? 'home' : 'home';
+                } else if (route.name === 'Form') {
+                  iconName = focused ? 'file-contract' : 'file-contract';
+                } else if (route.name === 'Profil') {
+                  iconName = focused ? 'user-circle' : 'user-circle';
+                }
+                return (
+                  <Icon
+                    name={iconName}
+                    color={color}
+                    type="light"
+                    size={size}
+                  />
+                );
+              },
+            })}
+            tabBarOptions={{
+              activeTintColor: global.headerColor,
+              inactiveTintColor: 'gray',
+            }}>
+            <Tab.Screen name="Home" component={HomeStack} />
+            <Tab.Screen name="Form" component={FormView} />
+            <Tab.Screen
+              name="Profil"
+              options={({route}) => ({
+                tabBarVisible: getTabBarVisible(route),
+              })}
+              component={ProfilStack}
+            />
+          </Tab.Navigator>
+        ) : (
+          <AuthStack />
+        )}
+      </NavigationContainer>
+    </ProvideAuth>
+
   );
 };
 

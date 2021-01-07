@@ -22,13 +22,34 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
+# Gradle
+/build/
+/RNTester/android/app/build/
+/RNTester/android/app/gradle/
+/RNTester/android/app/gradlew
+/RNTester/android/app/gradlew.bat
+/ReactAndroid/build/
+
+# Watchman 
+.watchmanconfig
+
 # Android/IntelliJ
 #
-build/
+build/ 
 .idea
 .gradle
 local.properties
 *.iml
+
+# Root dir shouldn't have Xcode project
+/*.xcodeproj
+
+# Libs that shouldn't have Xcode project
+/Libraries/FBLazyVector/**/*.xcodeproj
+/Libraries/FBReactNativeSpec/**/*.xcodeproj
+/Libraries/RCTRequired/**/*.xcodeproj
+/React/CoreModules/**/*.xcodeproj
+/packages/react-native-codegen/**/*.xcodeproj
 
 # node.js
 #

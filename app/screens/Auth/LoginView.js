@@ -22,8 +22,10 @@ import { useForm, Controller } from 'react-hook-form';
 import { Input } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../styles/LoginView.js';
-import { AuthContext } from '../../components/context';
-import Form from '../../components/Form';
+import {AuthContext} from '../../components/context';
+import {useAuth} from '../../hook/useAuth.js';
+import Form from '../../components/Form.js';
+import I18n from '../../utils/i18n';
 
 
 const LoginView = () => {
@@ -34,25 +36,45 @@ const LoginView = () => {
 
   const submitBtn = {title: "C'EST PARTIE !"}
 
-  const firstConnectTitle = 
-      <TouchableOpacity activeOpacity={0.3} style={{alignItems:"center", justifyContent:"center", marginTop:8}} onPress={() => navigation.navigate('FirstConnexionView')}>
-        <Text style={{fontWeight: "300"}}>Premiére connexion ?</Text>
-      </TouchableOpacity>
+  const {signIn} = useAuth();
+
+  const callbackSubmitForm = (obj) => {
+    obj = {
+      message: true,
+      token: 'ldZdkd@d2!',
+      refresh_token: 'ldZdkd@d2!ldkfld/*',
+    };
+    signIn(obj);
+  };
 
   const fields = [
-    { name: "login", label: "Adresse email", required: "Adresse email obligatoire*", iconLeft: null, type: "email", setValue: 'loic@mail.com' },
-    { name: "password", label: "Mot de passe", required: "Mot de passe obligatoire*", maxLength: 2, type: "password", customComponent: firstConnectTitle },
-  ]
+    {
+      name: 'email',
+      label: 'Adresse email',
+      required: 'Adresse email obligatoire*',
+      type: 'email',
+      //value: 'jpshandranie22@gmail.com',
+    },
+    {
+      name: 'password',
+      label: 'Mot de passe',
+      type: 'password',
+      //value: '123456',
+      required: 'Mot de passe obligatoire*',
+      maxLength: 6,
+      type: 'password',
+      //customComponent: firstConnectTitle,
+    },
+  ];
 
-  const onSubmit = async (data) => {
-    if (data.login && data.password) {
-      try {
-        await AsyncStorage.setItem('authToken', 'ldZdkd@d2!');
-      } catch (e) {
-        // saving error
-      }
+  const Header = () => {
+    return (
+      <View style={{marginTop: '20%'}}>
+        <Text style={styles.title}>{I18n.t('titleLogin')}</Text>
+        <Text style={styles.subtitle}>{I18n.t('subtitleLogin')}</Text>
+      </View>
+    );
 
-    }
   };
 
   const callbackSubmitForm = (data) => {
@@ -68,16 +90,36 @@ const LoginView = () => {
         style={{
           position: "absolute",
           alignSelf: 'center',
-          top: "12%",
+          fontSize: 24,
+          fontWeight: 'bold',
+          margin: 40,
+        }}>
+        CONNEXION
+      </Text>
+
+      <Form
+        buttonStyle={styles.button}
+        iconRightBtn={{
+          name: 'chevron-right',
+          size: '12',
+          color: '#FFFFFF',
+          type: 'solid',
         }}
-        source={require("../../assets/branding.png")}
+        headerForm={<Header />}
+        //footerForm={<Footer />}
+        scrollEnabled={true}
+        containerStyle={{
+          marginBottom: 32,
+          marginLeft: '4%',
+          marginRight: '4%',
+        }}
+        ContainerTextInputStyle={{backgroundColor: 'white'}}
+        TextInputStyle={{backgroundColor: 'white'}}
+        buttonTitle={I18n.t('connectTitle')}
+        fields={fields}
+        callbackSubmitForm={callbackSubmitForm}
       />
 
-      <View style={{ position: "absolute",  top: "35%"}}>
-      <Text style={{fontWeight: 'bold'}}>{I18n.t("titleLogin")}</Text>
-        <Text style={{marginTop: 8 }}>{I18n.t("subtitleLogin")}</Text>
-        <Form containerStyle={{marginTop: 32}} submitBtn={submitBtn} fields={fields} callbackSubmitForm={callbackSubmitForm} />        
-      </View>
     </View>
   );
 };
