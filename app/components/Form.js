@@ -61,6 +61,7 @@ const Form = ({
     defaultValues: defaultData,
   });
 
+
   /*   Example field 
     type = number | phone | email | date
     const fields = [
@@ -77,11 +78,13 @@ const Form = ({
         defaultData[item.name] = item.value;
       }
 
+
       if (item.name == 'date') {
         if (item.value) {
           setChosenDate(moment(item.value).format('Do MMMM YYYY'));
         }
       }
+
 
       if (item.rowFields) {
         setInfoRegion({
@@ -114,6 +117,7 @@ const Form = ({
           ),
           value: item.itemMaxLength,
         };
+
       }
       if (item.type == 'email') {
         emailType = {
@@ -142,6 +146,7 @@ const Form = ({
     }
     callbackSubmitForm(data);
   };
+
 
   const handleFocus = (index) => {
     setFocusRowFieldIndex(null);
@@ -461,6 +466,7 @@ const Form = ({
           </TouchableOpacity>
         </View>
       )}
+
     </View>
   );
 };
@@ -477,6 +483,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 8,
     fontSize: 12,
+
   },
   sectionStyle: {
     flexDirection: 'row',

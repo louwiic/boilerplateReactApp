@@ -12,29 +12,29 @@ import {
   Button,
   Alert,
   TouchableOpacity,
+  Image
 } from 'react-native';
-
-import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NavigationContainer} from '@react-navigation/native';
-import {useForm, Controller} from 'react-hook-form';
-import {Input} from 'react-native-elements';
-import {useNavigation} from '@react-navigation/native';
+import I18n from '../../utils/ i18n';
+import Icon, { configureFontAwesomePro } from 'react-native-fontawesome-pro';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { useForm, Controller } from 'react-hook-form';
+import { Input } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 import styles from '../../styles/LoginView.js';
 import {AuthContext} from '../../components/context';
 import {useAuth} from '../../hook/useAuth.js';
 import Form from '../../components/Form.js';
 import I18n from '../../utils/i18n';
 
+
 const LoginView = () => {
+
   const navigation = useNavigation();
 
-  const {register, setValue, handleSubmit, errors} = useForm();
+  const { signIn } = React.useContext(AuthContext);
 
-  React.useEffect(() => {
-    register({name: 'login'}, {required: true});
-    register({name: 'password'});
-  }, [register]);
+  const submitBtn = {title: "C'EST PARTIE !"}
 
   const {signIn} = useAuth();
 
@@ -74,12 +74,21 @@ const LoginView = () => {
         <Text style={styles.subtitle}>{I18n.t('subtitleLogin')}</Text>
       </View>
     );
+
   };
+
+  const callbackSubmitForm = (data) => {
+    signIn(data)
+    console.log("In logiinView")
+    console.log({data})
+  }
+
 
   return (
     <View style={styles.container}>
-      <Text
+      <Image
         style={{
+          position: "absolute",
           alignSelf: 'center',
           fontSize: 24,
           fontWeight: 'bold',
@@ -110,6 +119,7 @@ const LoginView = () => {
         fields={fields}
         callbackSubmitForm={callbackSubmitForm}
       />
+
     </View>
   );
 };

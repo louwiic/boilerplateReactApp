@@ -250,6 +250,7 @@ const ProfilView = ({route, navigation}) => {
         </View>
       </View>
       <View style={{flex: 2}}>
+
         <FlatList
           keyExtractor={(item, index) => index.toString()}
           data={list}
@@ -274,6 +275,7 @@ const ProfilView = ({route, navigation}) => {
           fields={fields}
           callbackSubmitForm={callbackSubmitForm}
         /> */}
+
       </View>
     </View>
   );

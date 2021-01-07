@@ -24,11 +24,11 @@ const HomeStack = () => {
       {/* Customize your app bar with options (check docs react navigation about) */}
       <Stack.Screen 
         options={{
-          title: 'HOME',
+          title: 'Liste des offres',
           headerStyle: {
-            backgroundColor: "#ff5722",
+            backgroundColor: "white",
           },
-          headerTintColor: '#f0f0f0',
+          headerTintColor: 'black',
           headerBackTitle: 'retour',
           headerTitleStyle: {
             textAlign: 'center',

@@ -16,6 +16,7 @@ import ProfilView from '../../app/screens/Profil/ProfilView';
 import {AuthContext} from '../../app/components/context';
 import CameraView from '../../app/screens/Profil/Camera';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
+import TutorialView from '../../app/components/tutorialApp';
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,7 @@ const AuthStack = ({navigation}) => {
         name="camera"
         component={CameraView}
       />
+
     </Stack.Navigator>
   );
 };

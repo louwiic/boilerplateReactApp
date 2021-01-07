@@ -52,3 +52,4 @@ export default {
   body: "Je souhaite supprimer mon compte de l'application Geko.",
   cguLink: 'https://www.sidr.fr/geko-by-sidr',
 };
+

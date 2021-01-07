@@ -27,24 +27,47 @@ import headerSectionHomeList from '../../components/List/itemTemplate/home/heade
 import SearchInList from '../../../app/components/List/searchInList';
 import {Rect} from 'react-native-svg';
 import API from '../../services/apiconfig';
+import gloabalStyles from '../../global/gloabalStyles';
+import ItemLastOffer from '../../components/List/itemTemplate/home/itemLastOffer';
+import ItemCategory from '../../components/List/itemTemplate/home/itemCategory';
+import ItemNews from '../../components/List/itemTemplate/home/itemNews';
 
 const DATA = [
   {
-    title: 'Main dishes',
-    data: ['Pizza', 'Burger', 'Risotto'],
+    title: '50€ de réduction',
+    image: "https://images.unsplash.com/photo-1525802498323-c8fbf69eb42f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
   },
   {
-    title: 'Sides',
-    data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
+    title: '50€ de réduction',
+    image: "https://images.unsplash.com/photo-1598863955097-e765dbf782df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80",
   },
   {
-    title: 'Drinks',
-    data: ['Water', 'Coke', 'Beer'],
+    title: '50€ de réduction',
+    image: "https://images.unsplash.com/photo-1523755231516-e43fd2e8dca5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80",
   },
   {
-    title: 'Desserts',
-    data: ['Cheese Cake', 'Ice Cream'],
+    title: '50€ de réduction',
+    image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
   },
+];
+
+
+const CATEGORIES = [
+  {
+    title: 'Nos produits du moment',
+    image: "https://images.unsplash.com/photo-1525802498323-c8fbf69eb42f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+    color: "#fb8c00"
+  },
+  {
+    title: 'Nos produits du moment',
+    image: "https://images.unsplash.com/photo-1598863955097-e765dbf782df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80",
+    color: "#ffd54f"
+  },
+  {
+    title: 'Nos produits du moment',
+    image: "https://images.unsplash.com/photo-1523755231516-e43fd2e8dca5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80",
+    color:"#c0ca33"
+  }, 
 ];
 
 const HomeView = ({navigation}) => {
@@ -77,6 +100,7 @@ const HomeView = ({navigation}) => {
       clearTimeout(timer);
     };
   }, [page]);
+
 
   function reload(page) {
     API.getMovies({page: page})
@@ -134,8 +158,40 @@ const HomeView = ({navigation}) => {
         )}
       />
 
-      {/*  Section List example show DATA on Top for format data sectionList
+
+   
       
+      <FlatList  
+          horizontal={true}
+          showsHorizontalScrollIndicator={false} 
+          onEndReached ={handlePaginate}
+          onEndReachedThreshold={0}
+          onRefresh={() => handleRefresh()}
+          refreshing={loadingPR}            
+          keyExtractor={(item, index) => index.toString()}
+          data={CATEGORIES}
+          renderItem={({item}) => <ItemCategory navigation={navigation} item={item} />}
+        />  
+
+      <View style={{justifyContent: "space-between", flexDirection: "row", marginHorizontal:"4%", marginTop: 30}}>
+        <Text style={{fontWeight:"700", fontSize:16, }}>{I18n.t('titleNew')}</Text>
+        <Text  style={{fontWeight:"700", fontSize:13, color: gloabalStyles.main}}>Tout afficher</Text>
+      </View>
+      
+      <FlatList  
+          horizontal={true}
+          showsHorizontalScrollIndicator={false} 
+          onEndReached ={handlePaginate}
+          onEndReachedThreshold={0}
+          onRefresh={() => handleRefresh()}
+          refreshing={loadingPR}            
+          keyExtractor={(item, index) => index.toString()}
+          data={DATA}
+          renderItem={({item}) => <ItemNews navigation={navigation} item={item} />}
+        />  
+
+
+      {/*  Section List example show DATA on Top for format data sectionList      
       <SectionList
         onRefresh={() => handleRefresh()}
         refreshing={false}
@@ -148,7 +204,7 @@ const HomeView = ({navigation}) => {
         ListHeaderComponent={headerSectionHomeList}
         ItemSeparatorComponent={renderSeparator}
       /> */}
-    </View>
+    </ScrollView>
   );
 };
 
