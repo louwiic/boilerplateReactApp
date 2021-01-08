@@ -31,43 +31,50 @@ import gloabalStyles from '../../global/gloabalStyles';
 import ItemLastOffer from '../../components/List/itemTemplate/home/itemLastOffer';
 import ItemCategory from '../../components/List/itemTemplate/home/itemCategory';
 import ItemNews from '../../components/List/itemTemplate/home/itemNews';
+import I18n from '../../utils/i18n';
 
 const DATA = [
   {
     title: '50€ de réduction',
-    image: "https://images.unsplash.com/photo-1525802498323-c8fbf69eb42f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+    image:
+      'https://images.unsplash.com/photo-1525802498323-c8fbf69eb42f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
   },
   {
     title: '50€ de réduction',
-    image: "https://images.unsplash.com/photo-1598863955097-e765dbf782df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80",
+    image:
+      'https://images.unsplash.com/photo-1598863955097-e765dbf782df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80',
   },
   {
     title: '50€ de réduction',
-    image: "https://images.unsplash.com/photo-1523755231516-e43fd2e8dca5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80",
+    image:
+      'https://images.unsplash.com/photo-1523755231516-e43fd2e8dca5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80',
   },
   {
     title: '50€ de réduction',
-    image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+    image:
+      'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
   },
 ];
-
 
 const CATEGORIES = [
   {
     title: 'Nos produits du moment',
-    image: "https://images.unsplash.com/photo-1525802498323-c8fbf69eb42f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
-    color: "#fb8c00"
+    image:
+      'https://images.unsplash.com/photo-1525802498323-c8fbf69eb42f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    color: '#fb8c00',
   },
   {
     title: 'Nos produits du moment',
-    image: "https://images.unsplash.com/photo-1598863955097-e765dbf782df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80",
-    color: "#ffd54f"
+    image:
+      'https://images.unsplash.com/photo-1598863955097-e765dbf782df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80',
+    color: '#ffd54f',
   },
   {
     title: 'Nos produits du moment',
-    image: "https://images.unsplash.com/photo-1523755231516-e43fd2e8dca5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80",
-    color:"#c0ca33"
-  }, 
+    image:
+      'https://images.unsplash.com/photo-1523755231516-e43fd2e8dca5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80',
+    color: '#c0ca33',
+  },
 ];
 
 const HomeView = ({navigation}) => {
@@ -100,7 +107,6 @@ const HomeView = ({navigation}) => {
       clearTimeout(timer);
     };
   }, [page]);
-
 
   function reload(page) {
     API.getMovies({page: page})
@@ -157,54 +163,7 @@ const HomeView = ({navigation}) => {
           <ItemSectionHomeList navigation={navigation} item={item} />
         )}
       />
-
-
-   
-      
-      <FlatList  
-          horizontal={true}
-          showsHorizontalScrollIndicator={false} 
-          onEndReached ={handlePaginate}
-          onEndReachedThreshold={0}
-          onRefresh={() => handleRefresh()}
-          refreshing={loadingPR}            
-          keyExtractor={(item, index) => index.toString()}
-          data={CATEGORIES}
-          renderItem={({item}) => <ItemCategory navigation={navigation} item={item} />}
-        />  
-
-      <View style={{justifyContent: "space-between", flexDirection: "row", marginHorizontal:"4%", marginTop: 30}}>
-        <Text style={{fontWeight:"700", fontSize:16, }}>{I18n.t('titleNew')}</Text>
-        <Text  style={{fontWeight:"700", fontSize:13, color: gloabalStyles.main}}>Tout afficher</Text>
-      </View>
-      
-      <FlatList  
-          horizontal={true}
-          showsHorizontalScrollIndicator={false} 
-          onEndReached ={handlePaginate}
-          onEndReachedThreshold={0}
-          onRefresh={() => handleRefresh()}
-          refreshing={loadingPR}            
-          keyExtractor={(item, index) => index.toString()}
-          data={DATA}
-          renderItem={({item}) => <ItemNews navigation={navigation} item={item} />}
-        />  
-
-
-      {/*  Section List example show DATA on Top for format data sectionList      
-      <SectionList
-        onRefresh={() => handleRefresh()}
-        refreshing={false}
-        sections={data}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({item}) => <ItemSectionHomeList navigation={navigation} title={item} />}
-        renderSectionHeader={({section: {title}}) => (
-          <Text style={styles.header}>{title}</Text>
-        )}
-        ListHeaderComponent={headerSectionHomeList}
-        ItemSeparatorComponent={renderSeparator}
-      /> */}
-    </ScrollView>
+    </View>
   );
 };
 

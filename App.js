@@ -8,7 +8,7 @@
 
 import 'react-native-gesture-handler';
 import React from 'react';
-import localization from 'moment/locale/fr'; 
+import localization from 'moment/locale/fr';
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,12 +19,12 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
 import allReducers from './redux/reducers.js';
-import Icon, { configureFontAwesomePro } from 'react-native-fontawesome-pro';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import Icon, {configureFontAwesomePro} from 'react-native-fontawesome-pro';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
 //stack
 import HomeStack from './navigation/Stacknavigator/HomeStack';
 import AuthStack from './navigation/Stacknavigator/AuthStack';
@@ -35,7 +35,7 @@ import FormView from './app/screens/Home/FormView';
 import Form from './app/components/Form';
 //lib
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from './app/components/context';
+import {AuthContext} from './app/components/context';
 //Nav
 
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
@@ -46,7 +46,6 @@ import {
 import {ProvideAuth} from './app/hook/useAuth.js';
 import {useSelector, useDispatch} from 'react-redux';
 
-
 /* Init config */
 configureFontAwesomePro(); //Fontawsome
 const Tab = createBottomTabNavigator(); //BottomTab
@@ -56,35 +55,36 @@ const App = () => {
   const loginState = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
 
+  const [displayTutorial, setDisplayTutorial] = React.useState({
+    firstLaunched: 'true',
+  });
+
   React.useEffect(() => {
     setTimeout(async () => {
-      // setIsLoading(false); 
+      // setIsLoading(false);
       let userToken = null;
       let firstLaunchKey = null;
       try {
         //await AsyncStorage.setItem('firstLaunchKey', "true")
         userToken = await AsyncStorage.getItem('userToken');
         firstLaunchKey = await AsyncStorage.getItem('firstLaunchKey');
-
       } catch (e) {
         console.log(e);
       }
       // console.log('user token: ', userToken);
-      setDisplayTutorial({ firstLaunched: String(firstLaunchKey) })
-      dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
+      setDisplayTutorial({firstLaunched: String(firstLaunchKey)});
+      dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
     }, 1000);
   }, []);
 
-
   const onLoadTutorial = async (state) => {
-    setDisplayTutorial({ firstLaunched: state });
+    setDisplayTutorial({firstLaunched: state});
     await AsyncStorage.setItem('firstLaunchKey', state);
-
-  }
+  };
 
   if (loginState.isLoading) {
     return (
-      <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}>
+      <View style={{justifyContent: 'center', flex: 1, alignItems: 'center'}}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -145,7 +145,6 @@ const App = () => {
         )}
       </NavigationContainer>
     </ProvideAuth>
-
   );
 };
 
